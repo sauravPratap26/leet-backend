@@ -57,3 +57,37 @@ export const registerService = async (name, email, password) => {
 
     // return mailSuccess;
 };
+
+export const loginService = async (email, password) => {
+    const user = await db.user.findUnique({
+        where: {
+            email,
+        },
+    });
+
+    if (!user) throw new ApiError(400, 1005);
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) throw new ApiError(400, 1006);
+
+    const token = jwt.sign(
+        {
+            id: user.id,
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "7d",
+        },
+    );
+    return {
+        token,
+        response: new ApiResponse(201, 8004, {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            image: user.image,
+        }),
+    };
+};
