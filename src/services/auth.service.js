@@ -41,7 +41,7 @@ export const registerService = async (name, email, password) => {
 
     return {
         token,
-        response: new ApiResponse(201, 8004, {
+        response: new ApiResponse(201, 8003, {
             id: newUser.id,
             email: newUser.email,
             name: newUser.name,
