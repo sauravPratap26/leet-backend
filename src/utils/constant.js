@@ -4,5 +4,6 @@ export const RESPONSE_SUCCESS_MESSAGE = {
 
 export const RESPONSE_ERROR_MESSAGE = {
     1001: "failure",
-    1002: "Validation Error"
+    1002: "Validation Error",
+    1003: "User already exists",
 };
