@@ -1,4 +1,4 @@
-import { RESPONSE_ERROR_MESSAGE } from "./constant";
+import { RESPONSE_ERROR_MESSAGE } from "./constant.js";
 
 class ApiError extends Error {
     constructor(
