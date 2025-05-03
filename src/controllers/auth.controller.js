@@ -21,6 +21,8 @@ const logout = asyncHandler((req, res) => {
     res.clearCookie("jwt", COOKIE_OPTIONS);
     res.status(200).send(new ApiResponse(200, 8005));
 });
-const get = asyncHandler((req, res) => {});
+const get = asyncHandler((req, res) => {
+    res.status(200).send(new ApiResponse(200, 8006, { user: req.user }));
+});
 
 export { register, login, logout, get };
