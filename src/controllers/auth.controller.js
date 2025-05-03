@@ -4,7 +4,8 @@ import { registerService } from "../services/auth.service.js";
 const register = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const registerResult = await registerService(name, email, password);
-    res.status(registerResult.statusCode).send(registerResult);
+    res.cookie(registerResult.token);
+    res.status(registerResult.response.statusCode).send(registerResult.response);
 });
 const login = asyncHandler((req, res) => {});
 const logout = asyncHandler((req, res) => {});
