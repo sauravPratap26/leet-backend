@@ -14,11 +14,11 @@ export const registerService = async (name, email, password) => {
     });
     if (existingUser) return new ApiError(409, 1003);
 
-    const mailSuccess = await mailService.send({
-        userEmail: email,
-        subject: registerEmailSubject,
-        mailgenContent: registerEmail({ userName: name, token: "xyz" }),
-    });
+    // const mailSuccess = await mailService.send({
+    //     userEmail: email,
+    //     subject: registerEmailSubject,
+    //     mailgenContent: registerEmail({ userName: name, token: "xyz" }),
+    // });
 
-    return mailSuccess;
+    // return mailSuccess;
 };
