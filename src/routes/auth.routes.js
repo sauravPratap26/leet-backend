@@ -6,12 +6,12 @@ import {
     register,
 } from "../controllers/auth.controller.js";
 import validate from "../utils/validator.js";
-import { registerValidation } from "../validators/index.js";
+import { loginValidation, registerValidation } from "../validators/index.js";
 
 const router = Router();
 
 router.post("/register", validate(registerValidation()), register);
-router.post("/login", login);
+router.post("/login", validate(loginValidation()), login);
 router.post("/logout", logout);
 router.get("/get", get);
 

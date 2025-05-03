@@ -14,3 +14,15 @@ export const registerValidation = () => {
             .max(50, { message: "Password should not exceed 50 characters" }),
     });
 };
+
+export const loginValidation = () => {
+    return z.object({
+        email: z
+            .string()
+            .email({ message: "Please enter a valid email address" }),
+        password: z
+            .string()
+            .min(8, { message: "Password should be at least 8 characters" })
+            .max(50, { message: "Password should not exceed 50 characters" }),
+    });
+};
