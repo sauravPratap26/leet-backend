@@ -3,6 +3,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8002: "mail sent successfully to register user",
     8003: "user registerd successfully",
     8004: "user logged in successfully",
+    8005: "user logged out successfully"
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
