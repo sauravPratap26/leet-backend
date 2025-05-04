@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import { date } from "zod";
 import { UserRole } from "../generated/prisma/index.js";
 import jwt from "jsonwebtoken";
+import { response } from "express";
 
 export const registerService = async (name, email, password) => {
     console.log({ name, email, password });
@@ -16,7 +17,7 @@ export const registerService = async (name, email, password) => {
             email,
         },
     });
-    if (existingUser) return new ApiError(409, 1003);
+    if (existingUser) return{ response: new ApiError(409, 1003)};
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -65,11 +66,11 @@ export const loginService = async (email, password) => {
         },
     });
 
-    if (!user) throw new ApiError(400, 1005);
+    if (!user) return {response: new ApiError(400, 1005)};
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordMatch) throw new ApiError(400, 1006);
+    if (!isPasswordMatch) return {response: new ApiError(400, 1006)};
 
     const token = jwt.sign(
         {
