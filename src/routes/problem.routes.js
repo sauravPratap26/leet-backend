@@ -8,9 +8,17 @@ import {
     getProblemById,
     updateProblemById,
 } from "../controllers/problem.controller.js";
+import validate from "../utils/validator.js";
+import { createProblemValidation } from "../validators/index.js";
 const router = Router();
 
-router.post("/create-problem", authMiddleware, checkAdmin, createProblem);
+router.post(
+    "/create-problem",
+    authMiddleware,
+    checkAdmin,
+    validate(createProblemValidation()),
+    createProblem,
+);
 router.post("/get-all-problem", authMiddleware, getAllProblem);
 router.post("/get-problem/:id", authMiddleware, getProblemById);
 router.post(

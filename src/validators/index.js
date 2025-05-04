@@ -26,3 +26,37 @@ export const loginValidation = () => {
             .max(50, { message: "Password should not exceed 50 characters" }),
     });
 };
+
+export const createProblemValidation = () => {
+    return z.object({
+        title: z.string({ required_error: "Question Title is required" }),
+        description: z.string({
+            required_error: "Question Description is required",
+        }),
+        difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
+            required_error: "Question Difficulty is required",
+        }),
+        tags: z.array(z.string(), {
+            required_error: "Tags must be an array of strings",
+        }),
+
+        userId: z.string({ required_error: "UserId is required" }),
+
+        examples: z.any({
+            required_error: "Examples are required",
+        }),
+
+        constraints: z.string({
+            required_error: "Question Constraint String is required",
+        }),
+
+        hints: z.string().optional(),
+        editorial: z.string().optional(),
+
+        testcases: z.any({ required_error: "Testcases are required" }),
+        codeSnippets: z.any({ required_error: "Code snippets are required" }),
+        referenceSolution: z.any({
+            required_error: "Reference solution is required",
+        }),
+    });
+};
