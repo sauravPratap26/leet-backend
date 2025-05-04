@@ -16,6 +16,7 @@ export const RESPONSE_ERROR_MESSAGE = {
     1006: "Invalid Credentials",
     1007: "Token not available",
     1008: "Token Expired",
+    1009: "User not authorised"
 };
 
 export const COOKIE_OPTIONS = {
