@@ -51,7 +51,7 @@ model Problem {
   editorial         String?
   testcases         Json
   codeSnippets      Json
-  referenceSolution Json
+  referenceSolutions Json @map("referenceSolution")
   createdAt         DateTime   @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

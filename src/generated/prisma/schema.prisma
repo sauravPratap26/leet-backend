@@ -39,20 +39,20 @@ model User {
 }
 
 model Problem {
-  id                String     @id @default(uuid())
-  title             String
-  description       String
-  difficulty        Difficulty
-  tags              String[]
-  userId            String
-  examples          Json
-  constraints       String
-  hints             String?
-  editorial         String?
-  testcases         Json
-  codeSnippets      Json
-  referenceSolution Json
-  createdAt         DateTime   @default(now())
+  id                 String     @id @default(uuid())
+  title              String
+  description        String
+  difficulty         Difficulty
+  tags               String[]
+  userId             String
+  examples           Json
+  constraints        String
+  hints              String?
+  editorial          String?
+  testcases          Json
+  codeSnippets       Json
+  referenceSolutions Json       @map("referenceSolution")
+  createdAt          DateTime   @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
