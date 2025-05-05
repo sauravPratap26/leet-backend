@@ -51,13 +51,13 @@ export const createProblemValidation = () => {
         hints: z.string().optional(),
         editorial: z.string().optional(),
 
-        testcases: z.any().refine(val => val !== undefined, {
+        testcases: z.any().refine((val) => val !== undefined, {
             message: "Testcases are required",
         }),
-        codeSnippets: z.any().refine(val => val !== undefined, {
+        codeSnippets: z.any().refine((val) => val !== undefined, {
             message: "Code snippets are required",
         }),
-        referenceSolutions: z.any().refine(val => val !== undefined, {
+        referenceSolutions: z.any().refine((val) => val !== undefined, {
             message: "Reference solution is required",
         }),
     });

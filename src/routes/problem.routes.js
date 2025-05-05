@@ -9,7 +9,9 @@ import {
     updateProblemById,
 } from "../controllers/problem.controller.js";
 import validate from "../utils/validator.js";
-import { createProblemValidation } from "../validators/index.js";
+import {
+    createProblemValidation,
+} from "../validators/index.js";
 const router = Router();
 
 router.post(
@@ -20,7 +22,7 @@ router.post(
     createProblem,
 );
 router.get("/get-all-problem", authMiddleware, getAllProblem);
-router.post("/get-problem/:id", authMiddleware, getProblemById);
+router.get("/get-problem/:id", authMiddleware, getProblemById);
 router.post(
     "/update-problem/:id",
     authMiddleware,

@@ -70,3 +70,11 @@ export const getAllProlemsService = async () => {
     }
     return new ApiResponse(200, 8008, problems);
 };
+
+export const getProblemByIdService = async (problemId) => {
+    const problem = await db.problem.findUnique({ where: { id: problemId } });
+    if (!problem) {
+        return new ApiError(404, 1013);
+    }
+    return new ApiResponse(200, 8009, problem);
+};
