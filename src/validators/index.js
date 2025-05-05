@@ -42,9 +42,7 @@ export const createProblemValidation = () => {
 
         userId: z.string({ required_error: "UserId is required" }),
 
-        examples: z.any({
-            required_error: "Examples are required",
-        }),
+        examples: z.any().optional(),
 
         constraints: z.string({
             required_error: "Question Constraint String is required",
@@ -53,10 +51,14 @@ export const createProblemValidation = () => {
         hints: z.string().optional(),
         editorial: z.string().optional(),
 
-        testcases: z.any({ required_error: "Testcases are required" }),
-        codeSnippets: z.any({ required_error: "Code snippets are required" }),
-        referenceSolution: z.any({
-            required_error: "Reference solution is required",
+        testcases: z.any().refine(val => val !== undefined, {
+            message: "Testcases are required",
+        }),
+        codeSnippets: z.any().refine(val => val !== undefined, {
+            message: "Code snippets are required",
+        }),
+        referenceSolutions: z.any().refine(val => val !== undefined, {
+            message: "Reference solution is required",
         }),
     });
 };
