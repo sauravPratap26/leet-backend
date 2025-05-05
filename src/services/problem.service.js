@@ -62,3 +62,11 @@ export const createProblemService = async (
 
     return new ApiResponse(200, 8007, newProblem);
 };
+
+export const getAllProlemsService = async () => {
+    const problems = await db.problem.findMany();
+    if (!problems) {
+        return new ApiError(404, 1012);
+    }
+    return new ApiResponse(200, 8008, problems);
+};

@@ -19,7 +19,7 @@ router.post(
     validate(createProblemValidation()),
     createProblem,
 );
-router.post("/get-all-problem", authMiddleware, getAllProblem);
+router.get("/get-all-problem", authMiddleware, getAllProblem);
 router.post("/get-problem/:id", authMiddleware, getProblemById);
 router.post(
     "/update-problem/:id",

@@ -5,7 +5,8 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8004: "user logged in successfully",
     8005: "user logged out successfully",
     8006: "user found",
-    8007: "problem created successfully"
+    8007: "problem created successfully",
+    8008: "problems fetched successfully"
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -19,7 +20,8 @@ export const RESPONSE_ERROR_MESSAGE = {
     1008: "Token Expired",
     1009: "User not authorised",
     1010: "Language not found",
-    1011: "Error in Sample Solution"
+    1011: "Error in Sample Solution",
+    1012: "Problems not found"
 };
 
 export const COOKIE_OPTIONS = {

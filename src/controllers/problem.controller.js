@@ -1,5 +1,9 @@
 import asyncHandler from "../utils/async-handler.js";
-import { createProblemService } from "../services/problem.service.js";
+import {
+    createProblemService,
+    getAllProlemsService,
+} from "../services/problem.service.js";
+import { db } from "../libs/db.js";
 
 export const createProblem = asyncHandler(async (req, res) => {
     const {
@@ -23,14 +27,17 @@ export const createProblem = asyncHandler(async (req, res) => {
         testcases,
         codeSnippets,
         referenceSolutions,
-        req.user.id
+        req.user.id,
     );
 
     return res
         .status(createProblemResponse.statusCode)
         .send(createProblemResponse);
 });
-export const getAllProblem = asyncHandler(async (req, res) => {});
+export const getAllProblem = asyncHandler(async (req, res) => {
+    const problems = await getAllProlemsService();
+    return res.status(problems.statusCode).send(problems);
+});
 export const getProblemById = asyncHandler(async (req, res) => {});
 export const updateProblemById = asyncHandler(async (req, res) => {});
 export const deleteProblem = asyncHandler(async (req, res) => {});
