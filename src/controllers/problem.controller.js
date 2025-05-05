@@ -23,8 +23,15 @@ export const createProblem = asyncHandler(async (req, res) => {
 
     for (const [language, soluionCode] of Object.entries(referenceSolutions)) {
         const languageId = getJudge0LanguageId(language);
+        console.log({ languageId });
         if (!languageId) {
-            return res.status(400).send(new ApiError(400, 1010));
+            return res
+                .status(400)
+                .send(
+                    new ApiError(400, 1010, [], "", {
+                        language: `${language} was not found`,
+                    }),
+                );
         }
         const submissions = testcases.map(({ input, output }) => ({
             source_code: soluionCode,
@@ -40,32 +47,30 @@ export const createProblem = asyncHandler(async (req, res) => {
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
             if (result.status.id !== 3) {
-                return res
-                    .status(400)
-                    .send(
-                        new ApiError(400, 1011, [], "", {
-                            error: `Testcase ${i + 1} failed for language ${language}`,
-                        }),
-                    );
+                return res.status(400).send(
+                    new ApiError(400, 1011, [], "", {
+                        error: `Testcase ${i + 1} failed for language ${language}`,
+                    }),
+                );
             }
         }
-        const newProblem = await db.problem.create({
-            data: {
-                title,
-                description,
-                difficulty,
-                tags,
-                examples,
-                constraints,
-                testcases,
-                codeSnippets,
-                referenceSolutions,
-                userId: req.user.id,
-            },
-        });
-
-        return res.status(200).send(new ApiResponse(200, 8007, newProblem));
     }
+    const newProblem = await db.problem.create({
+        data: {
+            title,
+            description,
+            difficulty,
+            tags,
+            examples,
+            constraints,
+            testcases,
+            codeSnippets,
+            referenceSolutions,
+            userId: req.user.id,
+        },
+    });
+
+    return res.status(200).send(new ApiResponse(200, 8007, newProblem));
 });
 export const getAllProblem = asyncHandler(async (req, res) => {});
 export const getProblemById = asyncHandler(async (req, res) => {});
