@@ -33,7 +33,7 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
     });
 
     if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).send(new ApiError(404, 1014));
     }
 
     req.user = user;

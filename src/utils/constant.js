@@ -24,6 +24,7 @@ export const RESPONSE_ERROR_MESSAGE = {
     1011: "Error in Sample Solution",
     1012: "Problems not found",
     1013: "Problem not found",
+    1014: "User not found"
 };
 
 export const COOKIE_OPTIONS = {
