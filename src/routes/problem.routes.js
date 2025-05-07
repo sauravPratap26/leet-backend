@@ -11,6 +11,7 @@ import {
 import validate from "../utils/validator.js";
 import {
     createProblemValidation,
+    updateProblemValidation,
 } from "../validators/index.js";
 const router = Router();
 
@@ -27,6 +28,7 @@ router.post(
     "/update-problem/:id",
     authMiddleware,
     checkAdmin,
+    validate(updateProblemValidation()),
     updateProblemById,
 );
 router.post("/delete-problem/:id", authMiddleware, checkAdmin, deleteProblem);

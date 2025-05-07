@@ -62,3 +62,37 @@ export const createProblemValidation = () => {
         }),
     });
 };
+
+export const updateProblemValidation = () => {
+    return z.object({
+        title: z.string({ required_error: "Question Title is required" }),
+        description: z.string({
+            required_error: "Question Description is required",
+        }),
+        difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
+            required_error: "Question Difficulty is required",
+        }),
+        tags: z.array(z.string(), {
+            required_error: "Tags must be an array of strings",
+        }),
+
+        examples: z.any().optional(),
+
+        constraints: z.string({
+            required_error: "Question Constraint String is required",
+        }),
+
+        hints: z.string().optional(),
+        editorial: z.string().optional(),
+
+        testcases: z.any().refine((val) => val !== undefined, {
+            message: "Testcases are required",
+        }),
+        codeSnippets: z.any().refine((val) => val !== undefined, {
+            message: "Code snippets are required",
+        }),
+        referenceSolutions: z.any().refine((val) => val !== undefined, {
+            message: "Reference solution is required",
+        }),
+    });
+};
