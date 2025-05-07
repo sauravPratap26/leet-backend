@@ -120,3 +120,26 @@ export const updateProblemService = async (problemId, data) => {
     console.log(updatedProblem);
     return new ApiResponse(200, 8010, updatedProblem);
 };
+
+export const deleteProblemService = async (problemId, userId) => {
+    return await db.$transaction(async (tx) => {
+        const isProblemExist = await tx.problem.findFirst({
+            where: {
+                id: problemId,
+                userId: userId,
+            },
+        });
+
+        if (!isProblemExist) {
+            return new ApiError(404, 1017);
+        }
+        await tx.problem.delete({
+            where: {
+                userId,
+                id: problemId,
+            },
+        });
+
+        return new ApiResponse(200, 8011);
+    });
+};

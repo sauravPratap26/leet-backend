@@ -9,6 +9,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8008: "problems fetched successfully",
     8009: "problem fetched successfully",
     8010: "problem updated successfully",
+    8011: "problem deleted successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -28,6 +29,7 @@ export const RESPONSE_ERROR_MESSAGE = {
     1014: "User not found",
     1015: "Request params validation error",
     1016: "Request query validation error",
+    1017: "Problem to be deleted not found",
 };
 
 export const COOKIE_OPTIONS = {

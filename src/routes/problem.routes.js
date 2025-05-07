@@ -40,7 +40,13 @@ router.post(
     }),
     updateProblemById,
 );
-router.post("/delete-problem/:id", authMiddleware, checkAdmin, deleteProblem);
+router.delete(
+    "/delete-problem/:id",
+    authMiddleware,
+    checkAdmin,
+    validate({ params: problemParamsValidation() }),
+    deleteProblem,
+);
 router.post("/get-solved-problems", authMiddleware, getAllProblemsSolvedByUser);
 
 export default router;

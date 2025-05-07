@@ -1,6 +1,7 @@
 import asyncHandler from "../utils/async-handler.js";
 import {
     createProblemService,
+    deleteProblemService,
     getAllProlemsService,
     getProblemByIdService,
     updateProblemService,
@@ -70,5 +71,11 @@ export const updateProblemById = asyncHandler(async (req, res) => {
     });
     return res.status(problem.statusCode).send(problem);
 });
-export const deleteProblem = asyncHandler(async (req, res) => {});
+export const deleteProblem = asyncHandler(async (req, res) => {
+    const deletedProblem = await deleteProblemService(
+        req.params.id,
+        req.user.id,
+    );
+    return res.status(deletedProblem.statusCode).send(deletedProblem);
+});
 export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {});
