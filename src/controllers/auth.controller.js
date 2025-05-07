@@ -6,8 +6,8 @@ import ApiResponse from "../utils/api-response.js";
 const register = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const registerResult = await registerService(name, email, password);
-    if(registerResult.token != undefined)
-    res.cookie("jwt", registerResult.token, COOKIE_OPTIONS);
+    if (registerResult.token != undefined)
+        res.cookie("jwt", registerResult.token, COOKIE_OPTIONS);
     res.status(registerResult.response.statusCode).send(
         registerResult.response,
     );
@@ -15,8 +15,8 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const loginResult = await loginService(email, password);
-    if(loginResult.token != undefined)
-    res.cookie("jwt", loginResult.token, COOKIE_OPTIONS);
+    if (loginResult.token != undefined)
+        res.cookie("jwt", loginResult.token, COOKIE_OPTIONS);
     res.status(loginResult.response.statusCode).send(loginResult.response);
 });
 const logout = asyncHandler((req, res) => {

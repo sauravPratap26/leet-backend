@@ -8,12 +8,12 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8007: "problem created successfully",
     8008: "problems fetched successfully",
     8009: "problem fetched successfully",
-    8010: ""
+    8010: "problem updated successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
     1001: "failure",
-    1002: "Validation Error",
+    1002: "Request body validation error",
     1003: "User already exists",
     1004: "Failed to send Email",
     1005: "User does not exists",
@@ -25,7 +25,9 @@ export const RESPONSE_ERROR_MESSAGE = {
     1011: "Error in Sample Solution",
     1012: "Problems not found",
     1013: "Problem not found",
-    1014: "User not found"
+    1014: "User not found",
+    1015: "Request params validation error",
+    1016: "Request query validation error",
 };
 
 export const COOKIE_OPTIONS = {

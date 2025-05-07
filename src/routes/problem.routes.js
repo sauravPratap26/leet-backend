@@ -11,6 +11,7 @@ import {
 import validate from "../utils/validator.js";
 import {
     createProblemValidation,
+    problemParamsValidation,
     updateProblemValidation,
 } from "../validators/index.js";
 const router = Router();
@@ -19,16 +20,24 @@ router.post(
     "/create-problem",
     authMiddleware,
     checkAdmin,
-    validate(createProblemValidation()),
+    validate({ schema: createProblemValidation() }),
     createProblem,
 );
 router.get("/get-all-problem", authMiddleware, getAllProblem);
-router.get("/get-problem/:id", authMiddleware, getProblemById);
+router.get(
+    "/get-problem/:id",
+    authMiddleware,
+    validate({ params: problemParamsValidation() }),
+    getProblemById,
+);
 router.post(
     "/update-problem/:id",
     authMiddleware,
     checkAdmin,
-    validate(updateProblemValidation()),
+    validate({
+        body: updateProblemValidation(),
+        params: problemParamsValidation(),
+    }),
     updateProblemById,
 );
 router.post("/delete-problem/:id", authMiddleware, checkAdmin, deleteProblem);

@@ -96,3 +96,10 @@ export const updateProblemValidation = () => {
         }),
     });
 };
+
+export const problemParamsValidation = () => {
+    return z.object({
+      id: z.string().uuid({ message: "Invalid problem ID" }),
+    });
+  };
+  

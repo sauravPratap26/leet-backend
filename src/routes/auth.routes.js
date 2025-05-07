@@ -11,8 +11,8 @@ import { authMiddleware as loggedInUser } from "../middlewares/auth.middleware.j
 
 const router = Router();
 
-router.post("/register", validate(registerValidation()), register);
-router.post("/login", validate(loginValidation()), login);
+router.post("/register", validate({ schema: registerValidation() }), register);
+router.post("/login", validate({ schema: loginValidation() }), login);
 router.post("/logout", loggedInUser, logout);
 router.get("/get", loggedInUser, get);
 
