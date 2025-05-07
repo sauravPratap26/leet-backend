@@ -3,6 +3,7 @@ import {
     createProblemService,
     getAllProlemsService,
     getProblemByIdService,
+    updateProblemService,
 } from "../services/problem.service.js";
 import { db } from "../libs/db.js";
 
@@ -43,6 +44,31 @@ export const getProblemById = asyncHandler(async (req, res) => {
     const problem = await getProblemByIdService(req.params.id);
     return res.status(problem.statusCode).send(problem);
 });
-export const updateProblemById = asyncHandler(async (req, res) => {});
+export const updateProblemById = asyncHandler(async (req, res) => {
+    const {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+    } = req.body;
+    const problem = await updateProblemService(req.params.id, {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+        userId: req.user.id,
+    });
+    return res.status(problem.statusCode).send(problem);
+});
 export const deleteProblem = asyncHandler(async (req, res) => {});
 export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {});

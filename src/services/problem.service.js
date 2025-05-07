@@ -6,18 +6,11 @@ import {
 } from "../libs/judge0.libs.js";
 import ApiError from "../utils/api-error.js";
 import ApiResponse from "../utils/api-response.js";
-export const createProblemService = async (
-    title,
-    description,
-    difficulty,
-    tags,
-    examples,
-    constraints,
-    testcases,
-    codeSnippets,
+
+const checkReferenceSolutionsTestCases = async ({
     referenceSolutions,
-    userId,
-) => {
+    testcases,
+}) => {
     for (const [language, soluionCode] of Object.entries(referenceSolutions)) {
         const languageId = getJudge0LanguageId(language);
         if (!languageId) {
@@ -39,11 +32,36 @@ export const createProblemService = async (
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
             if (result.status.id !== 3) {
-                return new ApiError(400, 1011, [], "", {
+                return {
+                    success: false,
                     error: `Testcase ${i + 1} failed for language ${language}`,
-                });
+                };
             }
         }
+        return { success: true, error: "" };
+    }
+};
+
+export const createProblemService = async (
+    title,
+    description,
+    difficulty,
+    tags,
+    examples,
+    constraints,
+    testcases,
+    codeSnippets,
+    referenceSolutions,
+    userId,
+) => {
+    const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases(
+        referenceSolutions,
+        testcases,
+    );
+    if (!isReferenceSolutionCorrect.success) {
+        return new ApiError(400, 1011, [], "", {
+            error: isReferenceSolutionCorrect.error,
+        });
     }
     const newProblem = await db.problem.create({
         data: {
@@ -77,4 +95,28 @@ export const getProblemByIdService = async (problemId) => {
         return new ApiError(404, 1013);
     }
     return new ApiResponse(200, 8009, problem);
+};
+
+export const updateProblemService = async (problemId, data) => {
+    const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
+        referenceSolutions: data.referenceSolutions,
+        testcases: data.testcases,
+    });
+    if (!isReferenceSolutionCorrect.success) {
+        return new ApiError(400, 1011, [], "", {
+            error: isReferenceSolutionCorrect.error,
+        });
+    }
+    const updatedProblem = await db.problem.update({
+        where: {
+            id: problemId,
+            userId: data.userId,
+        },
+        data: {
+            ...data,
+        },
+    });
+
+    console.log(updatedProblem);
+    return new ApiResponse(200, 8010, updatedProblem);
 };
