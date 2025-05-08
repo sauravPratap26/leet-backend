@@ -38,8 +38,8 @@ const checkReferenceSolutionsTestCases = async ({
                 };
             }
         }
-        return { success: true, error: "" };
     }
+    return { success: true, error: "" };
 };
 
 export const createProblemService = async (
@@ -54,10 +54,10 @@ export const createProblemService = async (
     referenceSolutions,
     userId,
 ) => {
-    const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases(
+    const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
         referenceSolutions,
         testcases,
-    );
+    });
     if (!isReferenceSolutionCorrect.success) {
         return new ApiError(400, 1011, [], "", {
             error: isReferenceSolutionCorrect.error,
