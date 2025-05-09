@@ -99,7 +99,35 @@ export const updateProblemValidation = () => {
 
 export const problemParamsValidation = () => {
     return z.object({
-      id: z.string().uuid({ message: "Invalid problem ID" }),
+        id: z.string().uuid({ message: "Invalid problem ID" }),
     });
-  };
-  
+};
+
+export const executeCodeValidation = () => {
+    return z
+        .object({
+            source_code: z.string({
+                required_error: "Source code is necessary",
+            }),
+            language_id: z.number({
+                required_error: "Language id is necessary",
+            }),
+            stdin: z
+                .array(
+                    z.string({
+                        required_error: "Stdin must be an array of strings",
+                    }),
+                )
+                .min(1, { message: "There must be at least one stdin input" }),
+            expected_outputs: z.array(
+                z.string({
+                    required_error: "Stdin must be an array of strings",
+                }),
+            ),
+            problemId: z.string().uuid({ message: "Invalid problem ID" }),
+        })
+        .refine((data) => data.expected_outputs.length === data.stdin.length, {
+            path: ["expected_outputs"],
+            message: "Expected outputs must be the same length as stdin",
+        });
+};
