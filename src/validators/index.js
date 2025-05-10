@@ -106,7 +106,7 @@ export const problemParamsValidation = () => {
 export const executeCodeValidation = () => {
     return z
         .object({
-            source_code: z.string({
+            source_code: z.any({
                 required_error: "Source code is necessary",
             }),
             language_id: z.number({
