@@ -14,6 +14,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8013: "user submissions fetched successfully",
     8014: "problem submissions for user fetched successfully",
     8015: "problem submissions fetched successfully",
+    8016: "problems solved by user fetched successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {

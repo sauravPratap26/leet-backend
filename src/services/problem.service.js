@@ -117,7 +117,6 @@ export const updateProblemService = async (problemId, data) => {
         },
     });
 
-    console.log(updatedProblem);
     return new ApiResponse(200, 8010, updatedProblem);
 };
 
@@ -142,4 +141,17 @@ export const deleteProblemService = async (problemId, userId) => {
 
         return new ApiResponse(200, 8011);
     });
+};
+
+export const getAllProblemsSolvedByUserService = async (userId) => {
+    const problemsSolved = await db.problem.findMany({
+        where: {
+            solvedBy: {
+                some: {
+                    userId,
+                },
+            },
+        },
+    });
+    return new ApiResponse(200, 8016, problemsSolved);
 };

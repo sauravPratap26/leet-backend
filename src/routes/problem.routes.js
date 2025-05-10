@@ -47,6 +47,6 @@ router.delete(
     validate({ params: problemParamsValidation() }),
     deleteProblem,
 );
-router.post("/get-solved-problems", authMiddleware, getAllProblemsSolvedByUser);
+router.get("/get-solved-problems", authMiddleware, getAllProblemsSolvedByUser);
 
 export default router;
