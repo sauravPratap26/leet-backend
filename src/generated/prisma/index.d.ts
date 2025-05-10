@@ -3977,10 +3977,10 @@ export namespace Prisma {
     stdin: string | null
     stdout: string | null
     stderr: string | null
-    compileOutput: string
+    compileOutput: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory: string | null
+    time: string | null
     createdAt: Date
     updatedAt: Date
     _count: SubmissionCountAggregateOutputType | null
@@ -4018,7 +4018,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
     testCases?: boolean | Submission$testCasesArgs<ExtArgs>
     _count?: boolean | SubmissionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["submission"]>
@@ -4039,7 +4039,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["submission"]>
 
   export type SubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4058,7 +4058,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["submission"]>
 
   export type SubmissionSelectScalar = {
@@ -4081,24 +4081,24 @@ export namespace Prisma {
   export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "problemId" | "sourceCode" | "language" | "stdin" | "stdout" | "stderr" | "compileOutput" | "status" | "memory" | "time" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
   export type SubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
     testCases?: boolean | Submission$testCasesArgs<ExtArgs>
     _count?: boolean | SubmissionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SubmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }
   export type SubmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Problem?: boolean | ProblemDefaultArgs<ExtArgs>
+    problem?: boolean | ProblemDefaultArgs<ExtArgs>
   }
 
   export type $SubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Submission"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      Problem: Prisma.$ProblemPayload<ExtArgs>
+      problem: Prisma.$ProblemPayload<ExtArgs>
       testCases: Prisma.$TestCaseResultPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -4110,10 +4110,10 @@ export namespace Prisma {
       stdin: string | null
       stdout: string | null
       stderr: string | null
-      compileOutput: string
+      compileOutput: string | null
       status: $Enums.Acceptance
-      memory: string
-      time: string
+      memory: string | null
+      time: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["submission"]>
@@ -4511,7 +4511,7 @@ export namespace Prisma {
   export interface Prisma__SubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Problem<T extends ProblemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProblemDefaultArgs<ExtArgs>>): Prisma__ProblemClient<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    problem<T extends ProblemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProblemDefaultArgs<ExtArgs>>): Prisma__ProblemClient<$Result.GetResult<Prisma.$ProblemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     testCases<T extends Submission$testCasesArgs<ExtArgs> = {}>(args?: Subset<T, Submission$testCasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestCaseResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5214,8 +5214,8 @@ export namespace Prisma {
     passed: boolean
     stdout: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr: string | null
+    compileOutput: string | null
     status: $Enums.Acceptance
     memory: string | null
     time: string | null
@@ -5332,8 +5332,8 @@ export namespace Prisma {
       passed: boolean
       stdout: string | null
       expected: string
-      stderr: string
-      compileOutput: string
+      stderr: string | null
+      compileOutput: string | null
       status: $Enums.Acceptance
       memory: string | null
       time: string | null
@@ -7721,14 +7721,14 @@ export namespace Prisma {
     stdin?: StringNullableFilter<"Submission"> | string | null
     stdout?: StringNullableFilter<"Submission"> | string | null
     stderr?: StringNullableFilter<"Submission"> | string | null
-    compileOutput?: StringFilter<"Submission"> | string
+    compileOutput?: StringNullableFilter<"Submission"> | string | null
     status?: EnumAcceptanceFilter<"Submission"> | $Enums.Acceptance
-    memory?: StringFilter<"Submission"> | string
-    time?: StringFilter<"Submission"> | string
+    memory?: StringNullableFilter<"Submission"> | string | null
+    time?: StringNullableFilter<"Submission"> | string | null
     createdAt?: DateTimeFilter<"Submission"> | Date | string
     updatedAt?: DateTimeFilter<"Submission"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    Problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
+    problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
     testCases?: TestCaseResultListRelationFilter
   }
 
@@ -7741,14 +7741,14 @@ export namespace Prisma {
     stdin?: SortOrderInput | SortOrder
     stdout?: SortOrderInput | SortOrder
     stderr?: SortOrderInput | SortOrder
-    compileOutput?: SortOrder
+    compileOutput?: SortOrderInput | SortOrder
     status?: SortOrder
-    memory?: SortOrder
-    time?: SortOrder
+    memory?: SortOrderInput | SortOrder
+    time?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
-    Problem?: ProblemOrderByWithRelationInput
+    problem?: ProblemOrderByWithRelationInput
     testCases?: TestCaseResultOrderByRelationAggregateInput
   }
 
@@ -7764,14 +7764,14 @@ export namespace Prisma {
     stdin?: StringNullableFilter<"Submission"> | string | null
     stdout?: StringNullableFilter<"Submission"> | string | null
     stderr?: StringNullableFilter<"Submission"> | string | null
-    compileOutput?: StringFilter<"Submission"> | string
+    compileOutput?: StringNullableFilter<"Submission"> | string | null
     status?: EnumAcceptanceFilter<"Submission"> | $Enums.Acceptance
-    memory?: StringFilter<"Submission"> | string
-    time?: StringFilter<"Submission"> | string
+    memory?: StringNullableFilter<"Submission"> | string | null
+    time?: StringNullableFilter<"Submission"> | string | null
     createdAt?: DateTimeFilter<"Submission"> | Date | string
     updatedAt?: DateTimeFilter<"Submission"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    Problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
+    problem?: XOR<ProblemScalarRelationFilter, ProblemWhereInput>
     testCases?: TestCaseResultListRelationFilter
   }, "id">
 
@@ -7784,10 +7784,10 @@ export namespace Prisma {
     stdin?: SortOrderInput | SortOrder
     stdout?: SortOrderInput | SortOrder
     stderr?: SortOrderInput | SortOrder
-    compileOutput?: SortOrder
+    compileOutput?: SortOrderInput | SortOrder
     status?: SortOrder
-    memory?: SortOrder
-    time?: SortOrder
+    memory?: SortOrderInput | SortOrder
+    time?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SubmissionCountOrderByAggregateInput
@@ -7807,10 +7807,10 @@ export namespace Prisma {
     stdin?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     stdout?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     stderr?: StringNullableWithAggregatesFilter<"Submission"> | string | null
-    compileOutput?: StringWithAggregatesFilter<"Submission"> | string
+    compileOutput?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     status?: EnumAcceptanceWithAggregatesFilter<"Submission"> | $Enums.Acceptance
-    memory?: StringWithAggregatesFilter<"Submission"> | string
-    time?: StringWithAggregatesFilter<"Submission"> | string
+    memory?: StringNullableWithAggregatesFilter<"Submission"> | string | null
+    time?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
   }
@@ -7825,8 +7825,8 @@ export namespace Prisma {
     passed?: BoolFilter<"TestCaseResult"> | boolean
     stdout?: StringNullableFilter<"TestCaseResult"> | string | null
     expected?: StringFilter<"TestCaseResult"> | string
-    stderr?: StringFilter<"TestCaseResult"> | string
-    compileOutput?: StringFilter<"TestCaseResult"> | string
+    stderr?: StringNullableFilter<"TestCaseResult"> | string | null
+    compileOutput?: StringNullableFilter<"TestCaseResult"> | string | null
     status?: EnumAcceptanceFilter<"TestCaseResult"> | $Enums.Acceptance
     memory?: StringNullableFilter<"TestCaseResult"> | string | null
     time?: StringNullableFilter<"TestCaseResult"> | string | null
@@ -7842,8 +7842,8 @@ export namespace Prisma {
     passed?: SortOrder
     stdout?: SortOrderInput | SortOrder
     expected?: SortOrder
-    stderr?: SortOrder
-    compileOutput?: SortOrder
+    stderr?: SortOrderInput | SortOrder
+    compileOutput?: SortOrderInput | SortOrder
     status?: SortOrder
     memory?: SortOrderInput | SortOrder
     time?: SortOrderInput | SortOrder
@@ -7862,8 +7862,8 @@ export namespace Prisma {
     passed?: BoolFilter<"TestCaseResult"> | boolean
     stdout?: StringNullableFilter<"TestCaseResult"> | string | null
     expected?: StringFilter<"TestCaseResult"> | string
-    stderr?: StringFilter<"TestCaseResult"> | string
-    compileOutput?: StringFilter<"TestCaseResult"> | string
+    stderr?: StringNullableFilter<"TestCaseResult"> | string | null
+    compileOutput?: StringNullableFilter<"TestCaseResult"> | string | null
     status?: EnumAcceptanceFilter<"TestCaseResult"> | $Enums.Acceptance
     memory?: StringNullableFilter<"TestCaseResult"> | string | null
     time?: StringNullableFilter<"TestCaseResult"> | string | null
@@ -7879,8 +7879,8 @@ export namespace Prisma {
     passed?: SortOrder
     stdout?: SortOrderInput | SortOrder
     expected?: SortOrder
-    stderr?: SortOrder
-    compileOutput?: SortOrder
+    stderr?: SortOrderInput | SortOrder
+    compileOutput?: SortOrderInput | SortOrder
     status?: SortOrder
     memory?: SortOrderInput | SortOrder
     time?: SortOrderInput | SortOrder
@@ -7903,8 +7903,8 @@ export namespace Prisma {
     passed?: BoolWithAggregatesFilter<"TestCaseResult"> | boolean
     stdout?: StringNullableWithAggregatesFilter<"TestCaseResult"> | string | null
     expected?: StringWithAggregatesFilter<"TestCaseResult"> | string
-    stderr?: StringWithAggregatesFilter<"TestCaseResult"> | string
-    compileOutput?: StringWithAggregatesFilter<"TestCaseResult"> | string
+    stderr?: StringNullableWithAggregatesFilter<"TestCaseResult"> | string | null
+    compileOutput?: StringNullableWithAggregatesFilter<"TestCaseResult"> | string | null
     status?: EnumAcceptanceWithAggregatesFilter<"TestCaseResult"> | $Enums.Acceptance
     memory?: StringNullableWithAggregatesFilter<"TestCaseResult"> | string | null
     time?: StringNullableWithAggregatesFilter<"TestCaseResult"> | string | null
@@ -8200,14 +8200,14 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubmissionsInput
-    Problem: ProblemCreateNestedOneWithoutSubmissionInput
+    problem: ProblemCreateNestedOneWithoutSubmissionInput
     testCases?: TestCaseResultCreateNestedManyWithoutSubmissionInput
   }
 
@@ -8220,10 +8220,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
@@ -8236,14 +8236,14 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
-    Problem?: ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutSubmissionNestedInput
     testCases?: TestCaseResultUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -8256,10 +8256,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -8274,10 +8274,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8289,10 +8289,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8306,10 +8306,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8320,8 +8320,8 @@ export namespace Prisma {
     passed: boolean
     stdout?: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr?: string | null
+    compileOutput?: string | null
     status: $Enums.Acceptance
     memory?: string | null
     time?: string | null
@@ -8337,8 +8337,8 @@ export namespace Prisma {
     passed: boolean
     stdout?: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr?: string | null
+    compileOutput?: string | null
     status: $Enums.Acceptance
     memory?: string | null
     time?: string | null
@@ -8352,8 +8352,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8369,8 +8369,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8385,8 +8385,8 @@ export namespace Prisma {
     passed: boolean
     stdout?: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr?: string | null
+    compileOutput?: string | null
     status: $Enums.Acceptance
     memory?: string | null
     time?: string | null
@@ -8400,8 +8400,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8416,8 +8416,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9648,13 +9648,13 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    Problem: ProblemCreateNestedOneWithoutSubmissionInput
+    problem: ProblemCreateNestedOneWithoutSubmissionInput
     testCases?: TestCaseResultCreateNestedManyWithoutSubmissionInput
   }
 
@@ -9666,10 +9666,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
@@ -9774,10 +9774,10 @@ export namespace Prisma {
     stdin?: StringNullableFilter<"Submission"> | string | null
     stdout?: StringNullableFilter<"Submission"> | string | null
     stderr?: StringNullableFilter<"Submission"> | string | null
-    compileOutput?: StringFilter<"Submission"> | string
+    compileOutput?: StringNullableFilter<"Submission"> | string | null
     status?: EnumAcceptanceFilter<"Submission"> | $Enums.Acceptance
-    memory?: StringFilter<"Submission"> | string
-    time?: StringFilter<"Submission"> | string
+    memory?: StringNullableFilter<"Submission"> | string | null
+    time?: StringNullableFilter<"Submission"> | string | null
     createdAt?: DateTimeFilter<"Submission"> | Date | string
     updatedAt?: DateTimeFilter<"Submission"> | Date | string
   }
@@ -9847,10 +9847,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubmissionsInput
@@ -9865,10 +9865,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseResultUncheckedCreateNestedManyWithoutSubmissionInput
@@ -10057,8 +10057,8 @@ export namespace Prisma {
     passed: boolean
     stdout?: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr?: string | null
+    compileOutput?: string | null
     status: $Enums.Acceptance
     memory?: string | null
     time?: string | null
@@ -10072,8 +10072,8 @@ export namespace Prisma {
     passed: boolean
     stdout?: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr?: string | null
+    compileOutput?: string | null
     status: $Enums.Acceptance
     memory?: string | null
     time?: string | null
@@ -10203,8 +10203,8 @@ export namespace Prisma {
     passed?: BoolFilter<"TestCaseResult"> | boolean
     stdout?: StringNullableFilter<"TestCaseResult"> | string | null
     expected?: StringFilter<"TestCaseResult"> | string
-    stderr?: StringFilter<"TestCaseResult"> | string
-    compileOutput?: StringFilter<"TestCaseResult"> | string
+    stderr?: StringNullableFilter<"TestCaseResult"> | string | null
+    compileOutput?: StringNullableFilter<"TestCaseResult"> | string | null
     status?: EnumAcceptanceFilter<"TestCaseResult"> | $Enums.Acceptance
     memory?: StringNullableFilter<"TestCaseResult"> | string | null
     time?: StringNullableFilter<"TestCaseResult"> | string | null
@@ -10219,14 +10219,14 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubmissionsInput
-    Problem: ProblemCreateNestedOneWithoutSubmissionInput
+    problem: ProblemCreateNestedOneWithoutSubmissionInput
   }
 
   export type SubmissionUncheckedCreateWithoutTestCasesInput = {
@@ -10238,10 +10238,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10269,14 +10269,14 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
-    Problem?: ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutSubmissionNestedInput
   }
 
   export type SubmissionUncheckedUpdateWithoutTestCasesInput = {
@@ -10288,10 +10288,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10481,10 +10481,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10558,13 +10558,13 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Problem?: ProblemUpdateOneRequiredWithoutSubmissionNestedInput
+    problem?: ProblemUpdateOneRequiredWithoutSubmissionNestedInput
     testCases?: TestCaseResultUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -10576,10 +10576,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -10593,10 +10593,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10630,10 +10630,10 @@ export namespace Prisma {
     stdin?: string | null
     stdout?: string | null
     stderr?: string | null
-    compileOutput: string
+    compileOutput?: string | null
     status: $Enums.Acceptance
-    memory: string
-    time: string
+    memory?: string | null
+    time?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10652,10 +10652,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
@@ -10670,10 +10670,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseResultUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -10687,10 +10687,10 @@ export namespace Prisma {
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
-    memory?: StringFieldUpdateOperationsInput | string
-    time?: StringFieldUpdateOperationsInput | string
+    memory?: NullableStringFieldUpdateOperationsInput | string | null
+    time?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10722,8 +10722,8 @@ export namespace Prisma {
     passed: boolean
     stdout?: string | null
     expected: string
-    stderr: string
-    compileOutput: string
+    stderr?: string | null
+    compileOutput?: string | null
     status: $Enums.Acceptance
     memory?: string | null
     time?: string | null
@@ -10737,8 +10737,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10752,8 +10752,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10767,8 +10767,8 @@ export namespace Prisma {
     passed?: BoolFieldUpdateOperationsInput | boolean
     stdout?: NullableStringFieldUpdateOperationsInput | string | null
     expected?: StringFieldUpdateOperationsInput | string
-    stderr?: StringFieldUpdateOperationsInput | string
-    compileOutput?: StringFieldUpdateOperationsInput | string
+    stderr?: NullableStringFieldUpdateOperationsInput | string | null
+    compileOutput?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumAcceptanceFieldUpdateOperationsInput | $Enums.Acceptance
     memory?: NullableStringFieldUpdateOperationsInput | string | null
     time?: NullableStringFieldUpdateOperationsInput | string | null
