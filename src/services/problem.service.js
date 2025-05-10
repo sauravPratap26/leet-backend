@@ -152,6 +152,13 @@ export const getAllProblemsSolvedByUserService = async (userId) => {
                 },
             },
         },
+        include: {
+            solvedBy: {
+                where: {
+                    userId,
+                },
+            },
+        },
     });
     return new ApiResponse(200, 8016, problemsSolved);
 };
