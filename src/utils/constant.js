@@ -10,6 +10,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8009: "problem fetched successfully",
     8010: "problem updated successfully",
     8011: "problem deleted successfully",
+    8012: "problem executed successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
