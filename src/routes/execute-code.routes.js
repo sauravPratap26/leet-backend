@@ -5,10 +5,10 @@ import validate from "../utils/validator.js";
 import { executeCodeValidation } from "../validators/index.js";
 const router = express.Router();
 
-router.get(
+router.post(
     "/",
     authMiddleware,
-    validate({ schema: executeCodeValidation }),
+    validate({ schema: executeCodeValidation() }),
     executeCode,
 );
 
