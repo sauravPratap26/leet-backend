@@ -131,3 +131,19 @@ export const executeCodeValidation = () => {
             message: "Expected outputs must be the same length as stdin",
         });
 };
+
+export const problemInPlaylistValidation = () => {
+    return z.object({
+        problemIds: z
+            .array(z.string(), {
+                required_error: "problemIds must be an array of strings",
+            })
+            .min(1, { message: "At least one problemId must be provided" }),
+    });
+};
+
+export const playlistValidation = () => {
+    return z.object({
+        id: z.string().uuid({ message: "Invalid playlist ID" }),
+    });
+};
