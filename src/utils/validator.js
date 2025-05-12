@@ -24,7 +24,7 @@ const validate =
             req.params = result.data;
         }
         if (query) {
-            const result = params.safeParse(req.query);
+            const result = query.safeParse(req.query);
             if (!result.success) {
                 return next(
                     new ApiError(403, 1016, fromZodError(result.error).details),
