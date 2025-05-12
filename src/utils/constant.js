@@ -15,6 +15,12 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8014: "problem submissions for user fetched successfully",
     8015: "problem submissions fetched successfully",
     8016: "problems solved by user fetched successfully",
+    8017: "playlist created successfully",
+    8018: "all playlist for user fetched successfully",
+    8019: "playlist fetched successfully",
+    8020: "problems added to the playlist",
+    8021: "playlist deleted successfully",
+    8022: "problem(s) removed successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -35,6 +41,8 @@ export const RESPONSE_ERROR_MESSAGE = {
     1015: "Request params validation error",
     1016: "Request query validation error",
     1017: "Problem to be deleted not found",
+    1018: "Playlist with same name already exits",
+    1019: "Playlist not found",
 };
 
 export const COOKIE_OPTIONS = {
