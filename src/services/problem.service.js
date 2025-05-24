@@ -11,7 +11,7 @@ const checkReferenceSolutionsTestCases = async ({
     referenceSolutions,
     testcases,
 }) => {
-    for (const [language, soluionCode] of Object.entries(referenceSolutions)) {
+    for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
         const languageId = getJudge0LanguageId(language);
         if (!languageId) {
             return new ApiError(400, 1010, [], "", {
@@ -19,7 +19,7 @@ const checkReferenceSolutionsTestCases = async ({
             });
         }
         const submissions = testcases.map(({ input, output }) => ({
-            source_code: soluionCode,
+            source_code: solutionCode,
             language_id: languageId,
             stdin: input,
             expected_output: output,
@@ -35,6 +35,12 @@ const checkReferenceSolutionsTestCases = async ({
                 return {
                     success: false,
                     error: `Testcase ${i + 1} failed for language ${language}`,
+                    details: {
+                        input: testcases[i].input,
+                        expected: testcases[i].output,
+                        received: result.stdout || result.stderr,
+                        status: result.status.description,
+                    },
                 };
             }
         }
@@ -60,7 +66,7 @@ export const createProblemService = async (
     });
     if (!isReferenceSolutionCorrect.success) {
         return new ApiError(400, 1011, [], "", {
-            error: isReferenceSolutionCorrect.error,
+            error: {message:isReferenceSolutionCorrect.error, details:isReferenceSolutionCorrect.details},
         });
     }
 

@@ -51,8 +51,6 @@ export const createProblemValidation = () => {
             )
             .min(1, "At least one tag is required"),
 
-        userId: z.string({ required_error: "UserId is required" }),
-
         examples: z.any().optional(),
 
         constraints: z.string({
