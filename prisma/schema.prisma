@@ -44,14 +44,16 @@ model User {
   submissions   Submission[]
   problemSolved ProblemSolved[]
   playLists     Playlist[]
+  tags          Tag[]           @relation("UserTags")
 }
 
 model Problem {
-  id                 String          @id @default(uuid())
+  id                 String              @id @default(uuid())
   title              String
   description        String
   difficulty         Difficulty
-  tags               String[]
+  oldTags            String[]
+  tags               Tag[]               @relation("ProblemTags")
   userId             String
   examples           Json
   constraints        String
@@ -59,13 +61,22 @@ model Problem {
   editorial          String?
   testcases          Json
   codeSnippets       Json
-  referenceSolutions Json            @map("referenceSolution")
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
-  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referenceSolutions Json                @map("referenceSolution")
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   submission         Submission[]
   solvedBy           ProblemSolved[]
-  problemsPlaylists ProblemInPlaylist[]
+  problemsPlaylists  ProblemInPlaylist[]
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  value     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  problems  Problem[] @relation("ProblemTags")
+  users     User[]    @relation("UserTags")
 }
 
 model Submission {
@@ -135,16 +146,15 @@ model Playlist {
   @@unique([name, userId]) //this will have unique playlist names per user
 }
 
-model ProblemInPlaylist{
-  id        String   @id @default(uuid())
-  playListId  String
+model ProblemInPlaylist {
+  id         String   @id @default(uuid())
+  playListId String
   problemId  String
-    createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  playlist  Playlist @relation(fields: [playListId] , references: [id] , onDelete: Cascade)
-  problem Problem @relation(fields: [problemId] , references: [id] , onDelete: Cascade)
+  playlist Playlist @relation(fields: [playListId], references: [id], onDelete: Cascade)
+  problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
-  @@unique([playListId , problemId])
-
+  @@unique([playListId, problemId])
 }

@@ -63,22 +63,35 @@ export const createProblemService = async (
             error: isReferenceSolutionCorrect.error,
         });
     }
+
     const newProblem = await db.problem.create({
         data: {
             title,
             description,
             difficulty,
-            tags,
             examples,
             constraints,
             testcases,
             codeSnippets,
             referenceSolutions,
             userId,
+            tags: {
+                connectOrCreate: tags.map((tag) => ({
+                    where: { value: tag.value },
+                    create: { value: tag.value },
+                })),
+            },
+        },
+        include: {
+            tags: true, // Optional: if you want to include tags in the response
         },
     });
+    const formattedProblem = {
+        ...newProblem,
+        tags: newProblem.tags.map((tag) => ({ value: tag.value })),
+    };
 
-    return new ApiResponse(200, 8007, newProblem);
+    return new ApiResponse(200, 8007, formattedProblem);
 };
 
 export const getAllProlemsService = async () => {
@@ -90,34 +103,80 @@ export const getAllProlemsService = async () => {
 };
 
 export const getProblemByIdService = async (problemId) => {
-    const problem = await db.problem.findUnique({ where: { id: problemId } });
+    const problem = await db.problem.findUnique({
+        where: { id: problemId },
+        include: { tags: true },
+    });
+
     if (!problem) {
         return new ApiError(404, 1013);
     }
-    return new ApiResponse(200, 8009, problem);
+
+    // Optional: format tags as [{ value: "xyz" }] for frontend
+    const formattedProblem = {
+        ...problem,
+        tags: problem.tags.map((tag) => ({ value: tag.value })),
+    };
+
+    return new ApiResponse(200, 8009, formattedProblem);
 };
 
 export const updateProblemService = async (problemId, data) => {
+    const {
+        title,
+        description,
+        difficulty,
+        tags, // [{ value: 'xyz' }, { value: 'abc' }]
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+        userId,
+    } = data;
+
     const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
-        referenceSolutions: data.referenceSolutions,
-        testcases: data.testcases,
+        referenceSolutions,
+        testcases,
     });
+
     if (!isReferenceSolutionCorrect.success) {
         return new ApiError(400, 1011, [], "", {
             error: isReferenceSolutionCorrect.error,
         });
     }
+
     const updatedProblem = await db.problem.update({
         where: {
             id: problemId,
-            userId: data.userId,
+            userId: userId,
         },
         data: {
-            ...data,
+            title,
+            description,
+            difficulty,
+            examples,
+            constraints,
+            testcases,
+            codeSnippets,
+            referenceSolutions,
+            tags: {
+                set: [],
+                connectOrCreate: tags.map((tag) => ({
+                    where: { value: tag.value },
+                    create: { value: tag.value },
+                })),
+            },
+        },
+        include: {
+            tags: true,
         },
     });
 
-    return new ApiResponse(200, 8010, updatedProblem);
+    return new ApiResponse(200, 8010, {
+        ...updatedProblem,
+        tags: updatedProblem.tags.map((tag) => ({ value: tag.value })),
+    });
 };
 
 export const deleteProblemService = async (problemId, userId) => {
