@@ -7,8 +7,17 @@ import executeCodeRoutes from "../src/routes/execute-code.routes.js";
 import submissionRoutes from "../src/routes/submission.routes.js";
 import playlistRoutes from "../src/routes/playlist.routes.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv"
+dotenv.config()
 const app = express();
 
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL,
+        credentials: true,
+    }),
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
