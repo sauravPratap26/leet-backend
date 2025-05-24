@@ -29,16 +29,27 @@ export const loginValidation = () => {
 
 export const createProblemValidation = () => {
     return z.object({
-        title: z.string({ required_error: "Question Title is required" }),
-        description: z.string({
-            required_error: "Question Description is required",
-        }),
+        title: z
+            .string({ required_error: "Question Title is required" })
+            .min(3, "Title must be at least 3 characters"),
+        description: z
+            .string({
+                required_error: "Question Description is required",
+            })
+            .min(10, "Description must be at least 10 characters"),
         difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
             required_error: "Question Difficulty is required",
         }),
-        tags: z.array(z.string(), {
-            required_error: "Tags must be an array of strings",
-        }),
+        tags: z
+            .array(
+                z.object({
+                    value: z
+                        .string()
+                        .trim()
+                        .min(1, "Tag should have some value"),
+                }),
+            )
+            .min(1, "At least one tag is required"),
 
         userId: z.string({ required_error: "UserId is required" }),
 
@@ -72,9 +83,16 @@ export const updateProblemValidation = () => {
         difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
             required_error: "Question Difficulty is required",
         }),
-        tags: z.array(z.string(), {
-            required_error: "Tags must be an array of strings",
-        }),
+        tags: z
+            .array(
+                z.object({
+                    value: z
+                        .string()
+                        .trim()
+                        .min(1, "Tag should have some value"),
+                }),
+            )
+            .min(1, "At least one tag is required"),
 
         examples: z.any().optional(),
 
