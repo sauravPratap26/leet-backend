@@ -142,8 +142,6 @@ model Playlist {
   updatedAt   DateTime            @updatedAt
   problems    ProblemInPlaylist[]
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([name, userId]) //this will have unique playlist names per user
 }
 
 model ProblemInPlaylist {

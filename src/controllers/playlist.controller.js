@@ -2,13 +2,14 @@ import {
     addProblemToPlaylistService,
     createPlaylistService,
     deletePlaylistService,
+    editPlaylistDetailsService,
     getAllListDetailsService,
     getPlayListDetailsService,
 } from "../services/playlist.service.js";
 import asyncHandler from "../utils/async-handler.js";
 
 export const getAllListDetails = asyncHandler(async (req, res) => {
-    const details = await getAllListDetailsService(userId);
+    const details = await getAllListDetailsService(req.user.id);
     return res.status(details.statusCode).send(details);
 });
 export const getPlayListDetails = asyncHandler(async (req, res) => {
@@ -18,9 +19,23 @@ export const getPlayListDetails = asyncHandler(async (req, res) => {
     return res.status(playlist.statusCode).send(playlist);
 });
 export const createPlaylist = asyncHandler(async (req, res) => {
-    const { name, deescription } = req.body;
-    let userId = req.user.userId;
-    const result = await createPlaylistService(name, deescription, userId);
+    const { name, description } = req.body;
+    let userId = req.user.id;
+    const result = await createPlaylistService(name, description, userId);
+    res.status(result.statusCode).send(result);
+});
+export const editPlaylistDetails = asyncHandler(async (req, res) => {
+    const { id, name, description } = req.body;
+    console.log({ id, name, description } ,req.user
+        
+    )
+    let userId = req.user.id;
+    const result = await editPlaylistDetailsService(
+        name,
+        description,
+        userId,
+        id,
+    );
     res.status(result.statusCode).send(result);
 });
 export const addProblemToPlaylist = asyncHandler(async (req, res) => {

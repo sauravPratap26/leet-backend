@@ -4,12 +4,14 @@ import {
     addProblemToPlaylist,
     createPlaylist,
     deletePlaylist,
+    editPlaylistDetails,
     getAllListDetails,
     getPlayListDetails,
     removeProblemFromPlaylist,
 } from "../controllers/playlist.controller.js";
 import validate from "../utils/validator.js";
 import {
+    editPlaylistDetailsValidation,
     playlistValidation,
     problemInPlaylistValidation,
 } from "../validators/index.js";
@@ -48,5 +50,11 @@ router.delete(
     }),
     authMiddleware,
     removeProblemFromPlaylist,
+);
+router.post(
+    "/edit-playlist",
+    validate({ schema: editPlaylistDetailsValidation() }),
+    authMiddleware,
+    editPlaylistDetails,
 );
 export default router;

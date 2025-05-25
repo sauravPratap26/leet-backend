@@ -163,3 +163,18 @@ export const playlistValidation = () => {
         id: z.string().uuid({ message: "Invalid playlist ID" }),
     });
 };
+
+export const editPlaylistDetailsValidation = () => {
+    return z.object({
+        name: z
+            .string()
+            .min(3, "Playlist name should have atleast 3 characters")
+            .max(15, "Playlist name should have max 15 characters"),
+        description: z
+            .string()
+            .min(3, "Playlist description should have atleast 3 characters")
+            .max(250, "Playlist description should have max 15 characters"),
+        userId: z.string().uuid({ message: "invalid user id" }),
+        id: z.string().uuid({ message: "invalid playlist id" }),
+    });
+};

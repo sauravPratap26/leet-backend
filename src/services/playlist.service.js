@@ -14,6 +14,9 @@ export const getAllListDetailsService = async (userId) => {
                 },
             },
         },
+        orderBy: {
+            updatedAt: "desc",
+        },
     });
     return new ApiResponse(200, 8018, playlist);
 };
@@ -34,26 +37,65 @@ export const getPlayListDetailsService = async (playlistId, userId) => {
     if (!playlist) {
         return new ApiError(404, 1019);
     }
-    return new ApiResponse(200, 8019);
+    return new ApiResponse(200, 8019, playlist);
 };
 export const createPlaylistService = async (name, description, userId) => {
-    const existingPlaylist = await db.playlist.findUnique({
-        where: {
-            name,
-        },
-    });
-    if (existingPlaylist) {
-        return new ApiError(400, 1018);
-    }
     const playlist = await db.playlist.create({
         data: {
             name,
             description,
             userId,
         },
+        include: {
+            problems: {
+                include: {
+                    problem: true,
+                },
+            },
+        },
     });
 
+    if (!playlist) {
+        return new ApiError(400, 1018);
+    }
     return new ApiResponse(200, 8017, playlist);
+};
+export const editPlaylistDetailsService = async (
+    name,
+    description,
+    userId,
+    id,
+) => {
+    const existingPlaylist = await db.playlist.findUnique({
+        where: {
+            id,
+            userId,
+        },
+    });
+    if (!existingPlaylist) {
+        return new ApiError(400, 1019);
+    }
+    const updatedPlaylist = await db.playlist.update({
+        where: {
+            id,
+            userId,
+        },
+        data: {
+            name,
+            description,
+        },
+        include: {
+            problems: {
+                include: {
+                    problem: true,
+                },
+            },
+        },
+    });
+    if (!updatedPlaylist) {
+        return new ApiError(400, 1020);
+    }
+    return new ApiResponse(200, 8023, updatedPlaylist);
 };
 export const addProblemToPlaylistService = async (playlistId, problemId) => {
     const problemInPlaylist = await db.problemInPlaylist.createMany({
