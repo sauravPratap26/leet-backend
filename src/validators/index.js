@@ -178,3 +178,9 @@ export const editPlaylistDetailsValidation = () => {
         id: z.string().uuid({ message: "invalid playlist id" }),
     });
 };
+
+export const deletePlaylistValidation = () => {
+    return z.object({
+        id: z.string().uuid({ message: "invalid playlist id" }),
+    });
+};

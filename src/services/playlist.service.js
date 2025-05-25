@@ -106,10 +106,11 @@ export const addProblemToPlaylistService = async (playlistId, problemId) => {
     });
     return new ApiResponse(201, 8020, problemInPlaylist);
 };
-export const deletePlaylistService = async (playlistId) => {
+export const deletePlaylistService = async (playlistId, userId) => {
     const deletedPlaylist = await db.playlist.delete({
         where: {
             id: playlistId,
+            userId,
         },
     });
     return new ApiResponse(200, 8021, deletedPlaylist);

@@ -11,6 +11,7 @@ import {
 } from "../controllers/playlist.controller.js";
 import validate from "../utils/validator.js";
 import {
+    deletePlaylistValidation,
     editPlaylistDetailsValidation,
     playlistValidation,
     problemInPlaylistValidation,
@@ -37,9 +38,9 @@ router.post(
     addProblemToPlaylist,
 );
 router.delete(
-    "/:playlistId",
+    "/delete",
+    validate({ schema: playlistValidation() }),
     authMiddleware,
-    validate({ params: playlistValidation() }),
     deletePlaylist,
 );
 router.delete(
