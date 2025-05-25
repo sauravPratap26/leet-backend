@@ -11840,7 +11840,6 @@ export namespace Prisma {
 
   export type PlaylistWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    name_userId?: PlaylistNameUserIdCompoundUniqueInput
     AND?: PlaylistWhereInput | PlaylistWhereInput[]
     OR?: PlaylistWhereInput[]
     NOT?: PlaylistWhereInput | PlaylistWhereInput[]
@@ -11851,7 +11850,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Playlist"> | Date | string
     problems?: ProblemInPlaylistListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "name_userId">
+  }, "id">
 
   export type PlaylistOrderByWithAggregationInput = {
     id?: SortOrder
@@ -13206,11 +13205,6 @@ export namespace Prisma {
     problemId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type PlaylistNameUserIdCompoundUniqueInput = {
-    name: string
-    userId: string
   }
 
   export type PlaylistCountOrderByAggregateInput = {
