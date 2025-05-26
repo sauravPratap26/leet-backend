@@ -155,6 +155,18 @@ export const problemInPlaylistValidation = () => {
                 required_error: "problemIds must be an array of strings",
             })
             .min(1, { message: "At least one problemId must be provided" }),
+        playListId: z.string().uuid({ message: "playlist id is invalid" }),
+    });
+};
+
+export const addProblemToPlaylistValidation = () => {
+    return z.object({
+        problemIds: z
+            .array(z.string(), {
+                required_error: "problemIds must be an array of strings",
+            })
+            .min(1, { message: "At least one problemId must be provided" }),
+        playListId: z.string().uuid({ message: "playlist id is invalid" }),
     });
 };
 
