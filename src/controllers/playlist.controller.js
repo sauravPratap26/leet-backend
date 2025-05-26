@@ -5,6 +5,7 @@ import {
     editPlaylistDetailsService,
     getAllListDetailsService,
     getPlayListDetailsService,
+    removeProblemFromPlaylistService,
 } from "../services/playlist.service.js";
 import asyncHandler from "../utils/async-handler.js";
 
@@ -36,8 +37,8 @@ export const editPlaylistDetails = asyncHandler(async (req, res) => {
     res.status(result.statusCode).send(result);
 });
 export const addProblemToPlaylist = asyncHandler(async (req, res) => {
-    const playListId = req.params.playListId;
-    const problemIds = req.body;
+    console.log(req.body);
+    const { problemIds, playListId } = req.body;
     const result = await addProblemToPlaylistService(playListId, problemIds);
     return res.status(result.statusCode).send(result);
 });
@@ -48,8 +49,10 @@ export const deletePlaylist = asyncHandler(async (req, res) => {
     return res.status(result.statusCode).send(result);
 });
 export const removeProblemFromPlaylist = asyncHandler(async (req, res) => {
-    const playListId = req.params.playListId;
-    const problemIds = req.body;
-    const result = await removeProblemFromPlaylist(playListId, problemIds);
+    const { playListId, problemIds } = req.body;
+    const result = await removeProblemFromPlaylistService(
+        playListId,
+        problemIds,
+    );
     return res.status(result.statusCode).send(result);
 });
