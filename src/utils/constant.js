@@ -22,6 +22,8 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8021: "playlist deleted successfully",
     8022: "problem(s) removed successfully",
     8023: "playlist details updated successfully",
+    8024: "problems from playlist for a user fetched successfully",
+    8025: "created problems fetched successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
