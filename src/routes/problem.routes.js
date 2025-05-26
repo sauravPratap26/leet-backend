@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { authMiddleware, checkAdmin } from "../middlewares/auth.middleware.js";
 import {
+    createdProblems,
     createProblem,
     deleteProblem,
+    findPlaylistProblems,
     getAllProblem,
     getAllProblemsSolvedByUser,
     getProblemById,
@@ -48,5 +50,7 @@ router.delete(
     deleteProblem,
 );
 router.get("/get-solved-problems", authMiddleware, getAllProblemsSolvedByUser);
+router.get("/get-playlist-problems", authMiddleware, findPlaylistProblems);
+router.get("/get-created-problems", authMiddleware, createdProblems);
 
 export default router;

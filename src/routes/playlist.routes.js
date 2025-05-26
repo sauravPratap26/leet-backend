@@ -11,6 +11,7 @@ import {
 } from "../controllers/playlist.controller.js";
 import validate from "../utils/validator.js";
 import {
+    addProblemToPlaylistValidation,
     deletePlaylistValidation,
     editPlaylistDetailsValidation,
     playlistValidation,
@@ -20,7 +21,7 @@ const router = express.Router();
 
 router.get("/", authMiddleware, getAllListDetails);
 router.get(
-    "/:playlistId",
+    "/:id",
     authMiddleware,
     validate({
         params: playlistValidation(),
@@ -29,11 +30,10 @@ router.get(
 );
 router.post("/create-playlist", authMiddleware, createPlaylist);
 router.post(
-    "/:playlistId/add-problem",
+    "/add-problem",
     authMiddleware,
     validate({
-        params: playlistValidation(),
-        schema: problemInPlaylistValidation(),
+        schema: addProblemToPlaylistValidation(),
     }),
     addProblemToPlaylist,
 );
@@ -44,9 +44,8 @@ router.delete(
     deletePlaylist,
 );
 router.delete(
-    "/:playlistId/remove-problem",
+    "/remove-problem",
     validate({
-        query: playlistValidation(),
         schema: problemInPlaylistValidation(),
     }),
     authMiddleware,
