@@ -24,7 +24,7 @@ app.use(urlencoded({ extended: true }));
 app.use("/api/v1/health", healthRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/problem", problemRoutes);
-app.use("/api/v1/execute-path", executeCodeRoutes);
+app.use("/api/v1/execute-code", executeCodeRoutes);
 app.use("/api/v1/submission", submissionRoutes);
 app.use("/api/v1/playlist", playlistRoutes);
 
