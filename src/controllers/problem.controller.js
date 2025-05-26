@@ -4,7 +4,9 @@ import {
     deleteProblemService,
     getAllProblemsSolvedByUserService,
     getAllProlemsService,
+    getCreatedProblems,
     getProblemByIdService,
+    problemsOfPlaylistService,
     updateProblemService,
 } from "../services/problem.service.js";
 import { db } from "../libs/db.js";
@@ -20,6 +22,8 @@ export const createProblem = asyncHandler(async (req, res) => {
         testcases,
         codeSnippets,
         referenceSolutions,
+        hints,
+        editorial
     } = req.body;
     const createProblemResponse = await createProblemService(
         title,
@@ -32,6 +36,7 @@ export const createProblem = asyncHandler(async (req, res) => {
         codeSnippets,
         referenceSolutions,
         req.user.id,
+        hints,editorial
     );
 
     return res
@@ -39,7 +44,7 @@ export const createProblem = asyncHandler(async (req, res) => {
         .send(createProblemResponse);
 });
 export const getAllProblem = asyncHandler(async (req, res) => {
-    const problems = await getAllProlemsService();
+    const problems = await getAllProlemsService(req.user.id);
     return res.status(problems.statusCode).send(problems);
 });
 export const getProblemById = asyncHandler(async (req, res) => {
@@ -81,6 +86,18 @@ export const deleteProblem = asyncHandler(async (req, res) => {
 });
 export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {
     const userId = req.user.id;
+    console.log({userId})
     const problemsSolved = await getAllProblemsSolvedByUserService(userId);
     return res.status(problemsSolved.statusCode).send(problemsSolved);
+});
+
+export const findPlaylistProblems = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const problems = await problemsOfPlaylistService(userId);
+    return res.status(problems.statusCode).send(problems);
+});
+export const createdProblems = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const problems = await getCreatedProblems(userId);
+    return res.status(problems.statusCode).send(problems);
 });
