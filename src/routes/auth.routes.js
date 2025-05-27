@@ -2,8 +2,8 @@ import { Router } from "express";
 import {
     get,
     login,
-    logout,
     register,
+    logout,
 } from "../controllers/auth.controller.js";
 import validate from "../utils/validator.js";
 import { loginValidation, registerValidation } from "../validators/index.js";

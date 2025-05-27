@@ -10,8 +10,14 @@ export const registerValidation = () => {
             .email({ message: "Please enter a valid email address" }),
         password: z
             .string()
-            .min(8, { message: "Password should be at least 8 characters" })
-            .max(50, { message: "Password should not exceed 50 characters" }),
+            .min(6, "Password must be at least 6 characters")
+            .max(15, "Password must be atmost 15 characters")
+            .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+            .regex(/[0-9]/, "Must contain at least one number")
+            .regex(
+                /[^A-Za-z0-9]/,
+                "Must contain at least one special character",
+            ),
     });
 };
 
@@ -194,5 +200,51 @@ export const editPlaylistDetailsValidation = () => {
 export const deletePlaylistValidation = () => {
     return z.object({
         id: z.string().uuid({ message: "invalid playlist id" }),
+    });
+};
+
+export const changePasswordValidation = () => {
+    return z
+        .object({
+            currentPassword: z
+                .string()
+                .min(6, "Password must be at least 6 characters")
+                .max(15, "Password must be at most 15 characters")
+                .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+                .regex(/[0-9]/, "Must contain at least one number")
+                .regex(
+                    /[^A-Za-z0-9]/,
+                    "Must contain at least one special character",
+                ),
+            newPassword: z
+                .string()
+                .min(6, "Password must be at least 6 characters")
+                .max(15, "Password must be at most 15 characters")
+                .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+                .regex(/[0-9]/, "Must contain at least one number")
+                .regex(
+                    /[^A-Za-z0-9]/,
+                    "Must contain at least one special character",
+                ),
+            confirmPassword: z
+                .string()
+                .min(6, "Password must be at least 6 characters")
+                .max(15, "Password must be at most 15 characters")
+                .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+                .regex(/[0-9]/, "Must contain at least one number")
+                .regex(
+                    /[^A-Za-z0-9]/,
+                    "Must contain at least one special character",
+                ),
+        })
+        .refine((data) => data.newPassword === data.confirmPassword, {
+            message: "New password and confirm password must match",
+            path: ["confirmPassword"],
+        });
+};
+
+export const changeAvatarValidations = () => {
+    return z.object({
+        avatar: z.string().min(4, "avatar name is incorrect"),
     });
 };
