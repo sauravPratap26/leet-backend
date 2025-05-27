@@ -1,4 +1,4 @@
-import { db } from "../libs/db";
+import { db } from "../libs/db.js";
 import ApiError from "../utils/api-error.js";
 import bcrypt from "bcryptjs";
 import ApiResponse from "../utils/api-response.js";
@@ -6,22 +6,25 @@ export const changePasswordService = async (
     currentPassword,
     newPassword,
     confirmPassword,
-    userId,
+    id,
 ) => {
     const user = await db.user.findUnique({
         where: {
-            userId,
+            id,
         },
     });
     if (!user) return new ApiError(404, 1005);
-    const oldHashedPassword = await bcrypt.hash(currentPassword, 10);
-    if (user.password != oldHashedPassword) {
+    const isPasswordCorrect = await bcrypt.compare(
+        currentPassword,
+        user.password,
+    );
+    if (!isPasswordCorrect) {
         return new ApiError(400, 1021);
     }
     const newPasswordHash = await bcrypt.hash(newPassword, 10);
     const updatedUser = await db.user.update({
         where: {
-            userId,
+            id,
         },
         data: {
             password: newPasswordHash,
@@ -33,10 +36,10 @@ export const changePasswordService = async (
     return new ApiResponse(200, 8027);
 };
 
-export const changeAvatarService = async (avatar, userId) => {
+export const changeAvatarService = async (avatar, id) => {
     const updatedUser = await db.user.update({
         where: {
-            userId,
+            id,
         },
         data: {
             avatar,
@@ -47,3 +50,7 @@ export const changeAvatarService = async (avatar, userId) => {
     }
     return new ApiResponse(200, 8027, { avatar: updatedUser.avatar });
 };
+
+export const updateUserTags =async(tags)=>{
+    
+}

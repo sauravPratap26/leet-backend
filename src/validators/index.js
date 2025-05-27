@@ -3,7 +3,7 @@ export const registerValidation = () => {
     return z.object({
         name: z
             .string()
-            .min(5, { message: "Name should be at least 5 characters" })
+            .min(3, { message: "Name should be at least 3 characters" })
             .max(50, { message: "Name should not exceed 50 characters" }),
         email: z
             .string()
@@ -17,7 +17,8 @@ export const registerValidation = () => {
             .regex(
                 /[^A-Za-z0-9]/,
                 "Must contain at least one special character",
-            ),
+            )
+            .trim(),
     });
 };
 
@@ -215,7 +216,8 @@ export const changePasswordValidation = () => {
                 .regex(
                     /[^A-Za-z0-9]/,
                     "Must contain at least one special character",
-                ),
+                )
+                .trim(),
             newPassword: z
                 .string()
                 .min(6, "Password must be at least 6 characters")
@@ -225,7 +227,8 @@ export const changePasswordValidation = () => {
                 .regex(
                     /[^A-Za-z0-9]/,
                     "Must contain at least one special character",
-                ),
+                )
+                .trim(),
             confirmPassword: z
                 .string()
                 .min(6, "Password must be at least 6 characters")
@@ -235,7 +238,8 @@ export const changePasswordValidation = () => {
                 .regex(
                     /[^A-Za-z0-9]/,
                     "Must contain at least one special character",
-                ),
+                )
+                .trim(),
         })
         .refine((data) => data.newPassword === data.confirmPassword, {
             message: "New password and confirm password must match",
