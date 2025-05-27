@@ -15,7 +15,7 @@ export const executeCodeService = async (
     language_id,
 ) => {
     const submissions = stdin.map((input) => ({
-        source_code: Object.values(source_code)[0],
+        source_code,
         language_id,
         stdin: input,
     }));
@@ -42,10 +42,13 @@ export const executeCodeService = async (
         };
     });
 
+    const language = getLanguageName(language_id).toUpperCase();
+    source_code = { [language]: source_code };
+
     return await db.$transaction(async (tx) => {
         const submission = await tx.submission.create({
             data: {
-                userId: "dc23a214-b46b-4fb2-889e-62998a055ee8",
+                userId,
                 problemId,
                 sourceCode: source_code,
                 language: getLanguageName(language_id),
