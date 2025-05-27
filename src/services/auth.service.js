@@ -89,6 +89,7 @@ export const loginService = async (email, password) => {
             name: user.name,
             role: user.role,
             image: user.image,
+            avatar: user.avatar
         }),
     };
 };
