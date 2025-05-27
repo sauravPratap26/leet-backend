@@ -59,6 +59,8 @@ export const createProblemService = async (
     codeSnippets,
     referenceSolutions,
     userId,
+    hints,
+    editorial,
 ) => {
     const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
         referenceSolutions,
@@ -66,7 +68,10 @@ export const createProblemService = async (
     });
     if (!isReferenceSolutionCorrect.success) {
         return new ApiError(400, 1011, [], "", {
-            error: {message:isReferenceSolutionCorrect.error, details:isReferenceSolutionCorrect.details},
+            error: {
+                message: isReferenceSolutionCorrect.error,
+                details: isReferenceSolutionCorrect.details,
+            },
         });
     }
 
@@ -87,6 +92,8 @@ export const createProblemService = async (
                     create: { value: tag.value },
                 })),
             },
+            hints,
+            editorial,
         },
         include: {
             tags: true, // Optional: if you want to include tags in the response
@@ -100,12 +107,41 @@ export const createProblemService = async (
     return new ApiResponse(200, 8007, formattedProblem);
 };
 
-export const getAllProlemsService = async () => {
-    const problems = await db.problem.findMany();
+export const getAllProlemsService = async (userId) => {
+    const problems = await db.problem.findMany({
+        include: {
+            tags: true,
+            problemsPlaylists: {
+                where: {
+                    playlist: {
+                        userId,
+                    },
+                },
+                include: {
+                    playlist: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
     if (!problems) {
         return new ApiError(404, 1012);
     }
-    return new ApiResponse(200, 8008, problems);
+    const formattedProblems = problems.map((problem) => {
+        if (problem.tags && problem.tags.length > 0) {
+            return {
+                ...problem,
+                tags: problem.tags.map((tag) => tag.value),
+            };
+        }
+        return problem;
+    });
+
+    return new ApiResponse(200, 8008, formattedProblems);
 };
 
 export const getProblemByIdService = async (problemId) => {
@@ -223,7 +259,91 @@ export const getAllProblemsSolvedByUserService = async (userId) => {
                     userId,
                 },
             },
+            problemsPlaylists: {
+                where: {
+                    playlist: {
+                        userId,
+                    },
+                },
+                include: {
+                    playlist: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                },
+            },
+            tags: true,
         },
     });
-    return new ApiResponse(200, 8016, problemsSolved);
+
+    const formattedProblems = problemsSolved.map((problem) => {
+        if (problem.tags && problem.tags.length > 0) {
+            return {
+                ...problem,
+                tags: problem.tags.map((tag) => tag.value),
+            };
+        }
+        return problem;
+    });
+    return new ApiResponse(200, 8016, formattedProblems);
+};
+
+export const problemsOfPlaylistService = async (userId) => {
+    const problemsInUserPlaylists = await prisma.problem.findMany({
+        where: {
+            problemsPlaylists: {
+                some: {
+                    playlist: {
+                        userId: userId,
+                    },
+                },
+            },
+        },
+        include: {
+            tags: true,
+            problemsPlaylists: {
+                where: {
+                    playlist: {
+                        userId: userId,
+                    },
+                },
+                include: {
+                    playlist: true,
+                },
+            },
+        },
+    });
+    const formattedProblems = problemsInUserPlaylists.map((problem) => {
+        if (problem.tags && problem.tags.length > 0) {
+            return {
+                ...problem,
+                tags: problem.tags.map((tag) => tag.value),
+            };
+        }
+        return problem;
+    });
+    return new ApiResponse(200, 8024, formattedProblems);
+};
+
+export const getCreatedProblems = async (userId) => {
+    const problems = await prisma.problem.findMany({
+        where: {
+            userId,
+        },
+        include: {
+            tags: true,
+        },
+    });
+    const formattedProblems = problems.map((problem) => {
+        if (problem.tags && problem.tags.length > 0) {
+            return {
+                ...problem,
+                tags: problem.tags.map((tag) => tag.value),
+            };
+        }
+        return problem;
+    });
+    return new ApiResponse(200, 8025, formattedProblems);
 };

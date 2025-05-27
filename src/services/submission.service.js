@@ -11,7 +11,7 @@ export const getAllSubmissionService = async (userId) => {
 };
 
 export const getSubmissionsForProblemService = async (userId, problemId) => {
-    const submission = await db.findMany({
+    const submission = await db.submission.findMany({
         where: {
             userId,
             problemId,
@@ -21,7 +21,7 @@ export const getSubmissionsForProblemService = async (userId, problemId) => {
 };
 
 export const getAllTheSubmissionsForProblemService = async (problemId) => {
-    const submission = await db.submission.count({
+    const submission = await db.problemSolved.count({
         where: {
             problemId,
         },

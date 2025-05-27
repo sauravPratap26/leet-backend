@@ -21,7 +21,7 @@ export const getAllListDetailsService = async (userId) => {
     return new ApiResponse(200, 8018, playlist);
 };
 export const getPlayListDetailsService = async (playlistId, userId) => {
-    const playlist = await db.findUnique({
+    const playlist = await db.playlist.findUnique({
         where: {
             id: playlistId,
             userId,
@@ -29,7 +29,16 @@ export const getPlayListDetailsService = async (playlistId, userId) => {
         include: {
             problems: {
                 include: {
-                    problem: true,
+                    problem: {
+                        include: {
+                            solvedBy: {
+                                where: {
+                                    userId,
+                                },
+                            },
+                            tags: true,
+                        },
+                    },
                 },
             },
         },
@@ -37,7 +46,15 @@ export const getPlayListDetailsService = async (playlistId, userId) => {
     if (!playlist) {
         return new ApiError(404, 1019);
     }
-    return new ApiResponse(200, 8019, playlist);
+
+    const formattedPlaylistProblems = playlist.problems.map((playlistProb) => {
+        const problem = playlistProb.problem;
+        return {
+            ...problem,
+            tags: problem.tags.map((tag) => tag.value),
+        };
+    });
+    return new ApiResponse(200, 8019, formattedPlaylistProblems);
 };
 export const createPlaylistService = async (name, description, userId) => {
     const playlist = await db.playlist.create({
@@ -97,10 +114,10 @@ export const editPlaylistDetailsService = async (
     }
     return new ApiResponse(200, 8023, updatedPlaylist);
 };
-export const addProblemToPlaylistService = async (playlistId, problemId) => {
+export const addProblemToPlaylistService = async (playListId, problemId) => {
     const problemInPlaylist = await db.problemInPlaylist.createMany({
         data: problemId.map((id) => ({
-            playlistId,
+            playListId,
             problemId: id,
         })),
     });
@@ -116,12 +133,12 @@ export const deletePlaylistService = async (playlistId, userId) => {
     return new ApiResponse(200, 8021, deletedPlaylist);
 };
 export const removeProblemFromPlaylistService = async (
-    playlistId,
+    playListId,
     problemId,
 ) => {
     const deletedProblem = await db.problemInPlaylist.deleteMany({
         where: {
-            playlistId,
+            playListId,
             problemId: {
                 in: problemId,
             },

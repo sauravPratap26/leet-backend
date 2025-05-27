@@ -24,6 +24,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8023: "playlist details updated successfully",
     8024: "problems from playlist for a user fetched successfully",
     8025: "created problems fetched successfully",
+    8026: "tags info fetched successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
