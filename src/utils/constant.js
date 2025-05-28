@@ -27,6 +27,8 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8026: "tags info fetched successfully",
     8027: "password updated successfully",
     8028: "tags updated successfully",
+    8029: "forgot password initiated",
+    8030: "password resset for user",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -51,7 +53,12 @@ export const RESPONSE_ERROR_MESSAGE = {
     1019: "Playlist not found",
     1020: "Failed to update playlist details",
     1021: "Failed to update password",
-    1022: "Failed to update tags"
+    1022: "Failed to update tags",
+    1023: "Failed to reset Password",
+    1024: "Failed to send mail",
+    1025: "Failed to reset Password",
+    1026: "Failed to reset Password",
+    1027: "Failed to reset Password",
 };
 
 export const COOKIE_OPTIONS = {

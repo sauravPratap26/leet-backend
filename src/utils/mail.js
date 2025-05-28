@@ -6,13 +6,14 @@ import ApiResponse from "./api-response.js";
 class MailService {
     #mailGenerator;
     #transporter;
+
     constructor() {
         // Mailgen setup
         this.#mailGenerator = new Mailgen({
             theme: "default",
             product: {
-                name: "Leet Lab",
-                link: "https://example.com",
+                name: "Paperless Code",
+                link: "https://www.paperlesscode.com",
             },
         });
 
@@ -28,17 +29,24 @@ class MailService {
     }
 
     async send({ userEmail, subject, mailgenContent }) {
-        const emailText = this.#mailGenerator.generatePlaintext(mailgenContent);
-        const emailHtml = this.#mailGenerator.generate(mailgenContent);
+        try {
+            const emailText =
+                this.#mailGenerator.generatePlaintext(mailgenContent);
+            const emailHtml = this.#mailGenerator.generate(mailgenContent);
 
-        const info = await this.#transporter.sendMail({
-            from: '"Leet Lab (❁´◡`❁)" <leetLab@gmail.com>',
-            to: userEmail,
-            subject,
-            text: emailText,
-            html: emailHtml,
-        });
-        return new ApiResponse(200, 8002);
+            const info = await this.#transporter.sendMail({
+                from: '"Paperless Code (❁´◡`❁)" <support@paperlesscode.com>',
+                to: userEmail,
+                subject,
+                text: emailText,
+                html: emailHtml,
+            });
+
+            return new ApiResponse(200, 8002);
+        } catch (error) {
+            console.error("Error sending email:", error);
+            return new ApiError(500, 1024);
+        }
     }
 }
 

@@ -1,5 +1,10 @@
 import asyncHandler from "../utils/async-handler.js";
-import { loginService, registerService } from "../services/auth.service.js";
+import {
+    forgotPasswordService,
+    loginService,
+    registerService,
+    resetPasswordService,
+} from "../services/auth.service.js";
 import { COOKIE_OPTIONS } from "../utils/constant.js";
 import ApiResponse from "../utils/api-response.js";
 
@@ -27,4 +32,16 @@ const get = asyncHandler((req, res) => {
     res.status(200).send(new ApiResponse(200, 8006, { user: req.user }));
 });
 
-export { register, login, logout, get };
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const result = await forgotPasswordService(email);
+    res.status(result.statusCode).send(result);
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+    const result = await resetPasswordService(token, password);
+    res.status(result.statusCode).send(result);
+});
+export { register, login, logout, get, forgotPassword, resetPassword };

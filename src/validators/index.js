@@ -23,8 +23,8 @@ export const loginValidation = () => {
             .email({ message: "Please enter a valid email address" }),
         password: z
             .string()
-            .min(8, { message: "Password should be at least 6 characters" })
-            .max(50, { message: "Password should not exceed 15 characters" }),
+            .min(6, { message: "Password should be at least 6 characters" })
+            .max(15, { message: "Password should not exceed 15 characters" }),
     });
 };
 
@@ -232,5 +232,23 @@ export const changePasswordValidation = () => {
 export const changeAvatarValidations = () => {
     return z.object({
         avatar: z.string().min(4, "avatar name is incorrect"),
+    });
+};
+
+export const forgotPasswordValidation = () => {
+    return z.object({
+        email: z
+            .string()
+            .email({ message: "Please enter a valid email address" }),
+    });
+};
+
+export const resetPasswordValidation = () => {
+    return z.object({
+        password: z
+            .string()
+            .min(6, "Password must be at least 6 characters")
+            .max(15, "Password must be atmost 15 characters")
+            .trim(),
     });
 };
