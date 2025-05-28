@@ -14,12 +14,24 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL
+];
+
 app.use(
-    cors({
-        origin: process.env.FRONTEND_URL,
-        credentials: true,
-    }),
+  cors({
+    origin: function(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("****** CORS ERROR ******")
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
