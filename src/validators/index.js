@@ -12,12 +12,6 @@ export const registerValidation = () => {
             .string()
             .min(6, "Password must be at least 6 characters")
             .max(15, "Password must be atmost 15 characters")
-            .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-            .regex(/[0-9]/, "Must contain at least one number")
-            .regex(
-                /[^A-Za-z0-9]/,
-                "Must contain at least one special character",
-            )
             .trim(),
     });
 };
@@ -29,8 +23,8 @@ export const loginValidation = () => {
             .email({ message: "Please enter a valid email address" }),
         password: z
             .string()
-            .min(8, { message: "Password should be at least 8 characters" })
-            .max(50, { message: "Password should not exceed 50 characters" }),
+            .min(8, { message: "Password should be at least 6 characters" })
+            .max(50, { message: "Password should not exceed 15 characters" }),
     });
 };
 
@@ -222,23 +216,11 @@ export const changePasswordValidation = () => {
                 .string()
                 .min(6, "Password must be at least 6 characters")
                 .max(15, "Password must be at most 15 characters")
-                .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-                .regex(/[0-9]/, "Must contain at least one number")
-                .regex(
-                    /[^A-Za-z0-9]/,
-                    "Must contain at least one special character",
-                )
                 .trim(),
             confirmPassword: z
                 .string()
                 .min(6, "Password must be at least 6 characters")
                 .max(15, "Password must be at most 15 characters")
-                .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-                .regex(/[0-9]/, "Must contain at least one number")
-                .regex(
-                    /[^A-Za-z0-9]/,
-                    "Must contain at least one special character",
-                )
                 .trim(),
         })
         .refine((data) => data.newPassword === data.confirmPassword, {
