@@ -9,6 +9,7 @@ import {
     changeAvatar,
     changePassword,
     updateSocials,
+    updateTags,
 } from "../controllers/profile.controller.js";
 const router = express.Router();
 router.post(
@@ -23,6 +24,7 @@ router.post(
     authMiddleware,
     changeAvatar,
 );
+router.post("/update-tags", authMiddleware, updateTags);
 router.post("/update-socials", authMiddleware, updateSocials);
 
-export default router
+export default router;

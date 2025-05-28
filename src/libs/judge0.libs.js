@@ -16,6 +16,13 @@ export const submitBatch = async (submissions) => {
         {
             submissions,
         },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${process.env.JUDGE_SECRET}`,
+            },
+        },
     );
     return data;
 };
@@ -28,6 +35,13 @@ export const pollBatchResults = async (tokens) => {
                 params: {
                     tokens: tokens.join(","),
                     base64_encoded: false,
+                },
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: `${process.env.JUDGE_SECRET}`,
                 },
             },
         );

@@ -17,7 +17,7 @@ export const registerService = async (name, email, password) => {
             email,
         },
     });
-    if (existingUser) return{ response: new ApiError(409, 1003)};
+    if (existingUser) return { response: new ApiError(409, 1003) };
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -64,13 +64,16 @@ export const loginService = async (email, password) => {
         where: {
             email,
         },
+        include: {
+            tags: true,
+        },
     });
 
-    if (!user) return {response: new ApiError(400, 1005)};
+    if (!user) return { response: new ApiError(400, 1005) };
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordMatch) return {response: new ApiError(400, 1006)};
+    if (!isPasswordMatch) return { response: new ApiError(400, 1006) };
 
     const token = jwt.sign(
         {
@@ -81,15 +84,17 @@ export const loginService = async (email, password) => {
             expiresIn: "7d",
         },
     );
+    const updatedUser = { ...user, tags: user.tags.map((tag) => tag.value) };
     return {
         token,
         response: new ApiResponse(201, 8004, {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-            image: user.image,
-            avatar: user.avatar
+            id: updatedUser.id,
+            email: updatedUser.email,
+            name: updatedUser.name,
+            role: updatedUser.role,
+            image: updatedUser.image,
+            avatar: updatedUser.avatar,
+            tags: updatedUser.tags
         }),
     };
 };

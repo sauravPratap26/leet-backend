@@ -1,6 +1,7 @@
 import {
     changeAvatarService,
     changePasswordService,
+    updateTagsService,
 } from "../services/profile.service.js";
 import asyncHandler from "../utils/async-handler.js";
 
@@ -23,4 +24,10 @@ export const changeAvatar = asyncHandler(async (req, res) => {
     return res.status(result.statusCode).send(result);
 });
 
+export const updateTags = asyncHandler(async (req, res) => {
+    const { newTags } = req.body;
+    const id = req.user.id;
+    const result = await updateTagsService(newTags, id);
+    return res.status(result.statusCode).send(result);
+});
 export const updateSocials = asyncHandler((req, res) => {});
