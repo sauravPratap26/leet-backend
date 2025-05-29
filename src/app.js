@@ -15,6 +15,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
+  process.env.FRONTEND_URL1,
   process.env.FRONTEND_URL
 ];
 
