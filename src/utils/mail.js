@@ -20,7 +20,8 @@ class MailService {
         // Nodemailer transporter setup
         this.#transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
-            port: 2525,
+            port: process.env.MAIL_PORT,
+            secure:false,
             auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASS,
@@ -42,6 +43,7 @@ class MailService {
                 html: emailHtml,
             });
 
+            console.log(info)
             return new ApiResponse(200, 8002);
         } catch (error) {
             console.error("Error sending email:", error);
