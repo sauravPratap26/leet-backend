@@ -126,20 +126,26 @@ export const getAllProlemsService = async (userId) => {
                     },
                 },
             },
+            solvedBy: {
+                where: {
+                    userId,
+                },
+                select: {
+                    id: true,
+                },
+            },
         },
     });
+
     if (!problems) {
         return new ApiError(404, 1012);
     }
-    const formattedProblems = problems.map((problem) => {
-        if (problem.tags && problem.tags.length > 0) {
-            return {
-                ...problem,
-                tags: problem.tags.map((tag) => tag.value),
-            };
-        }
-        return problem;
-    });
+
+    const formattedProblems = problems.map(({ solvedBy, tags, ...rest }) => ({
+        ...rest,
+        isSolved: solvedBy.length > 0,
+        tags: tags.map((tag) => tag.value),
+    }));
 
     return new ApiResponse(200, 8008, formattedProblems);
 };
@@ -212,13 +218,26 @@ export const updateProblemService = async (problemId, data) => {
         },
         include: {
             tags: true,
+            solvedBy: {
+                where: {
+                    userId,
+                },
+                select: {
+                    id: true,
+                },
+            },
         },
     });
 
-    return new ApiResponse(200, 8010, {
-        ...updatedProblem,
-        tags: updatedProblem.tags.map((tag) => ({ value: tag.value })),
-    });
+    const formattedProblems = updatedProblem.map(
+        ({ solvedBy, tags, ...rest }) => ({
+            ...rest,
+            isSolved: solvedBy.length > 0,
+            tags: tags.map((tag) => tag.value),
+        }),
+    );
+
+    return new ApiResponse(200, 8010, formattedProblems);
 };
 
 export const deleteProblemService = async (problemId, userId) => {
@@ -334,16 +353,35 @@ export const getCreatedProblems = async (userId) => {
         },
         include: {
             tags: true,
+            problemsPlaylists: {
+                where: {
+                    playlist: {
+                        userId,
+                    },
+                },
+                include: {
+                    playlist: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                },
+            },
+            solvedBy: {
+                where: {
+                    userId,
+                },
+                select: {
+                    id: true,
+                },
+            },
         },
     });
-    const formattedProblems = problems.map((problem) => {
-        if (problem.tags && problem.tags.length > 0) {
-            return {
-                ...problem,
-                tags: problem.tags.map((tag) => tag.value),
-            };
-        }
-        return problem;
-    });
+    const formattedProblems = problems.map(({ solvedBy, tags, ...rest }) => ({
+        ...rest,
+        isSolved: solvedBy.length > 0,
+        tags: tags.map((tag) => tag.value),
+    }));
     return new ApiResponse(200, 8025, formattedProblems);
 };
