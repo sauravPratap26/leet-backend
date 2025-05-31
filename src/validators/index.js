@@ -205,12 +205,6 @@ export const changePasswordValidation = () => {
                 .string()
                 .min(6, "Password must be at least 6 characters")
                 .max(15, "Password must be at most 15 characters")
-                .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-                .regex(/[0-9]/, "Must contain at least one number")
-                .regex(
-                    /[^A-Za-z0-9]/,
-                    "Must contain at least one special character",
-                )
                 .trim(),
             newPassword: z
                 .string()
