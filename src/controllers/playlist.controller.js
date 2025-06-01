@@ -37,7 +37,6 @@ export const editPlaylistDetails = asyncHandler(async (req, res) => {
     res.status(result.statusCode).send(result);
 });
 export const addProblemToPlaylist = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const { problemIds, playListId } = req.body;
     const result = await addProblemToPlaylistService(playListId, problemIds);
     return res.status(result.statusCode).send(result);

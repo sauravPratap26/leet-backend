@@ -86,7 +86,6 @@ export const deleteProblem = asyncHandler(async (req, res) => {
 });
 export const getAllProblemsSolvedByUser = asyncHandler(async (req, res) => {
     const userId = req.user.id;
-    console.log({userId})
     const problemsSolved = await getAllProblemsSolvedByUserService(userId);
     return res.status(problemsSolved.statusCode).send(problemsSolved);
 });

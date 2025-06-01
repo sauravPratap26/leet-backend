@@ -15,7 +15,6 @@ import jwt from "jsonwebtoken";
 import { response } from "express";
 
 export const registerService = async (name, email, password) => {
-    console.log({ name, email, password });
 
     const existingUser = await db.user.findUnique({
         where: {
