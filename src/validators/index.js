@@ -41,6 +41,9 @@ export const createProblemValidation = () => {
         difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
             required_error: "Question Difficulty is required",
         }),
+        languageSolutionArray: z
+            .array(z.string())
+            .min(1, "At least one language should  be there"),
         tags: z
             .array(
                 z.object({
@@ -82,6 +85,9 @@ export const updateProblemValidation = () => {
         difficulty: z.enum(["EASY", "MEDIUM", "HARD"], {
             required_error: "Question Difficulty is required",
         }),
+        languageSolutionArray: z
+            .array(z.string())
+            .min(1, "At least one language should  be there"),
         tags: z
             .array(
                 z.object({

@@ -23,7 +23,8 @@ export const createProblem = asyncHandler(async (req, res) => {
         codeSnippets,
         referenceSolutions,
         hints,
-        editorial
+        editorial,
+        languageSolutionArray,
     } = req.body;
     const createProblemResponse = await createProblemService(
         title,
@@ -33,10 +34,12 @@ export const createProblem = asyncHandler(async (req, res) => {
         examples,
         constraints,
         testcases,
+        languageSolutionArray,
         codeSnippets,
         referenceSolutions,
         req.user.id,
-        hints,editorial
+        hints,
+        editorial,
     );
 
     return res
@@ -60,6 +63,7 @@ export const updateProblemById = asyncHandler(async (req, res) => {
         examples,
         constraints,
         testcases,
+        languageSolutionArray,
         codeSnippets,
         referenceSolutions,
     } = req.body;
@@ -71,6 +75,7 @@ export const updateProblemById = asyncHandler(async (req, res) => {
         examples,
         constraints,
         testcases,
+        languageSolutionArray,
         codeSnippets,
         referenceSolutions,
         userId: req.user.id,

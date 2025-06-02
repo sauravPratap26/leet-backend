@@ -54,26 +54,27 @@ model User {
 }
 
 model Problem {
-  id                 String              @id @default(uuid())
-  title              String
-  description        String
-  difficulty         Difficulty
-  oldTags            String[]
-  tags               Tag[]               @relation("ProblemTags")
-  userId             String
-  examples           Json
-  constraints        String
-  hints              String?
-  editorial          String?
-  testcases          Json
-  codeSnippets       Json
-  referenceSolutions Json                @map("referenceSolution")
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  submission         Submission[]
-  solvedBy           ProblemSolved[]
-  problemsPlaylists  ProblemInPlaylist[]
+  id                    String              @id @default(uuid())
+  title                 String
+  description           String
+  difficulty            Difficulty
+  oldTags               String[]
+  tags                  Tag[]               @relation("ProblemTags")
+  userId                String
+  examples              Json
+  constraints           String
+  hints                 String?
+  editorial             String?
+  testcases             Json
+  codeSnippets          Json
+  languageSolutionArray String[]            @default([])
+  referenceSolutions    Json                @map("referenceSolution")
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission            Submission[]
+  solvedBy              ProblemSolved[]
+  problemsPlaylists     ProblemInPlaylist[]
 }
 
 model Tag {

@@ -10,39 +10,43 @@ import ApiResponse from "../utils/api-response.js";
 const checkReferenceSolutionsTestCases = async ({
     referenceSolutions,
     testcases,
+    languageSolutionArray,
 }) => {
     for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
-        const languageId = getJudge0LanguageId(language);
-        if (!languageId) {
-            return new ApiError(400, 1010, [], "", {
-                language: `${language} was not found`,
-            });
-        }
-        const submissions = testcases.map(({ input, output }) => ({
-            source_code: solutionCode,
-            language_id: languageId,
-            stdin: input,
-            expected_output: output,
-        }));
-
-        const submissionResults = await submitBatch(submissions);
-        const token = submissionResults.map((res) => res.token);
-        const results = await pollBatchResults(token);
-
-        for (let i = 0; i < results.length; i++) {
-            const result = results[i];
-            if (result.status.id !== 3) {
-                return {
-                    success: false,
-                    error: `Testcase ${i + 1} failed for language ${language}`,
-                    details: {
-                        input: testcases[i].input,
-                        expected: testcases[i].output,
-                        received: result.stdout || result.stderr,
-                        status: result.status.description,
-                    },
-                };
+        if (languageSolutionArray.includes(language.toUpperCase())) {
+            const languageId = getJudge0LanguageId(language);
+            if (!languageId) {
+                return new ApiError(400, 1010, [], "", {
+                    language: `${language} was not found`,
+                });
             }
+            const submissions = testcases.map(({ input, output }) => ({
+                source_code: solutionCode,
+                language_id: languageId,
+                stdin: input,
+                expected_output: output,
+            }));
+
+            const submissionResults = await submitBatch(submissions);
+            const token = submissionResults.map((res) => res.token);
+            const results = await pollBatchResults(token);
+
+            for (let i = 0; i < results.length; i++) {
+                const result = results[i];
+                if (result.status.id !== 3) {
+                    return {
+                        success: false,
+                        error: `Testcase ${i + 1} failed for language ${language}`,
+                        details: {
+                            input: testcases[i].input,
+                            expected: testcases[i].output,
+                            received: result.stdout || result.stderr,
+                            status: result.status.description,
+                        },
+                    };
+                }
+            }
+        } else {
         }
     }
     return { success: true, error: "" };
@@ -56,6 +60,7 @@ export const createProblemService = async (
     examples,
     constraints,
     testcases,
+    languageSolutionArray,
     codeSnippets,
     referenceSolutions,
     userId,
@@ -65,6 +70,7 @@ export const createProblemService = async (
     const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
         referenceSolutions,
         testcases,
+        languageSolutionArray,
     });
     if (!isReferenceSolutionCorrect.success) {
         return new ApiError(400, 1011, [], "", {
@@ -86,6 +92,7 @@ export const createProblemService = async (
             codeSnippets,
             referenceSolutions,
             userId,
+            languageSolutionArray,
             tags: {
                 connectOrCreate: tags.map((tag) => ({
                     where: { value: tag.value },
@@ -178,6 +185,7 @@ export const updateProblemService = async (problemId, data) => {
         examples,
         constraints,
         testcases,
+        languageSolutionArray,
         codeSnippets,
         referenceSolutions,
         userId,
@@ -186,6 +194,7 @@ export const updateProblemService = async (problemId, data) => {
     const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
         referenceSolutions,
         testcases,
+        languageSolutionArray,
     });
 
     if (!isReferenceSolutionCorrect.success) {
@@ -206,6 +215,7 @@ export const updateProblemService = async (problemId, data) => {
             examples,
             constraints,
             testcases,
+            languageSolutionArray,
             codeSnippets,
             referenceSolutions,
             tags: {
