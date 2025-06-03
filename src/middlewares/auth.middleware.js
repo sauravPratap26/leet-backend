@@ -29,7 +29,7 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
             name: true,
             email: true,
             role: true,
-            avatar:true
+            avatar: true,
         },
     });
 
@@ -53,6 +53,22 @@ export const checkAdmin = async (req, res, next) => {
     });
     if (!user || user.role != UserRole.ADMIN) {
         return res.status(403).send(new ApiError(403, 1009));
+    }
+    next();
+};
+
+export const checkRoomCreator = async (req, res, next) => {
+    const userId = req.user.id;
+    const user = await db.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            canCreateRoom: true,
+        },
+    });
+    if (!user || !user.canCreateRoom) {
+        return res.status(403).send(new ApiError(403, 1028));
     }
     next();
 };

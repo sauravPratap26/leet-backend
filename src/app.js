@@ -8,6 +8,7 @@ import submissionRoutes from "../src/routes/submission.routes.js";
 import playlistRoutes from "../src/routes/playlist.routes.js";
 import tagsRoutes from "../src/routes/tag.routes.js";
 import profileRoutes from "../src/routes/profile.route.js";
+import roomRoutes from "../src/routes/room.route.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -44,6 +45,7 @@ app.use("/api/v1/submission", submissionRoutes);
 app.use("/api/v1/playlist", playlistRoutes);
 app.use("/api/v1/tags", tagsRoutes);
 app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/club",roomRoutes)
 app.use(errorHandler);
 
 export default app;
