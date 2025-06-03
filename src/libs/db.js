@@ -2,6 +2,8 @@ import { PrismaClient } from "../generated/prisma/index.js";
 
 const globalForPrisma = globalThis;
 
-export const db = globalForPrisma.prisma || new PrismaClient();
+if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = new PrismaClient();
+}
 
-if (process.env.NODE_ENV !== "prod") globalForPrisma.prisma = db;
+export const db = globalForPrisma.prisma;
