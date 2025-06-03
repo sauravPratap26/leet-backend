@@ -19,6 +19,11 @@ enum UserRole {
   ADMIN
 }
 
+enum ClubRole {
+  TEACHER
+  STUDENT
+}
+
 enum Difficulty {
   EASY
   MEDIUM
@@ -51,6 +56,9 @@ model User {
   linkedin      String?
   twitter       String?
   github        String?
+  canCreateClub Boolean         @default(false)
+
+  ClubMember ClubMember[]
 }
 
 model Problem {
@@ -75,6 +83,9 @@ model Problem {
   submission            Submission[]
   solvedBy              ProblemSolved[]
   problemsPlaylists     ProblemInPlaylist[]
+
+  clubId String? // null if global problem
+  club   Club?   @relation(fields: [clubId], references: [id], onDelete: Cascade)
 }
 
 model Tag {
@@ -107,6 +118,8 @@ model Submission {
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   testCases TestCaseResult[]
+  clubId    String?
+  club      Club?            @relation(fields: [clubId], references: [id], onDelete: Cascade)
 }
 
 model TestCaseResult {
@@ -149,6 +162,8 @@ model Playlist {
   updatedAt   DateTime            @updatedAt
   problems    ProblemInPlaylist[]
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clubId      String?
+  club        Club?               @relation(fields: [clubId], references: [id], onDelete: Cascade)
 }
 
 model ProblemInPlaylist {
@@ -162,4 +177,34 @@ model ProblemInPlaylist {
   problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([playListId, problemId])
+}
+
+model Club {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  code        String   @unique // Unique join code for members
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isDeleted   Boolean  @default(false)
+
+  members    ClubMember[]
+  problems   Problem[] // problems created under this club
+  playlists  Playlist[] // playlists under this club
+  Submission Submission[]
+}
+
+model ClubMember {
+  id       String    @id @default(uuid())
+  clubId   String
+  userId   String
+  role     ClubRole  @default(STUDENT)
+  banned   Boolean   @default(false)
+  joinedAt DateTime  @default(now())
+  leftAt   DateTime?
+
+  club Club @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, userId])
 }
