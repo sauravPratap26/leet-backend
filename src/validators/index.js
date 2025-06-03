@@ -252,3 +252,18 @@ export const resetPasswordValidation = () => {
             .trim(),
     });
 };
+
+export const createRoomValiation = () => {
+    return z.object({
+        name: z
+            .string()
+            .min(3, "Room name must be at least 3 characters")
+            .max(15, "Room name must be atmost 15 characters")
+            .trim(),
+        description: z
+            .string()
+            .min(6, "Room description must be at least 6 characters")
+            .max(20, "Room description must be atmost 20 characters")
+            .trim(),
+    });
+};

@@ -29,6 +29,14 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8028: "tags updated successfully",
     8029: "forgot password initiated",
     8030: "password resset for user",
+    8031: "room created successfully",
+    8032: "room deleted successfully",
+    8033: "room updated successfully",
+    8034: "room code generated successfully",
+    8035: "created room details fetched successfully",
+    8036: "user room details fetched successfully",
+    8037: "user rejoined room successfully",
+    8038: "user joined room successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -59,6 +67,20 @@ export const RESPONSE_ERROR_MESSAGE = {
     1025: "Failed to reset Password",
     1026: "Failed to reset Password",
     1027: "Failed to reset Password",
+    1028: "Unauthorized to create Room",
+    1029: "Room does not exist",
+    1030: "Error creating Room",
+    1031: "Error deleting Room",
+    1032: "Error updating Room",
+    1033: "Error updating Room Code",
+    1034: "Failed to generate Room Code",
+    1035: "Error getting Created Room details",
+    1036: "Error getting user Rooms",
+    1037: "Error joining room",
+    1038: "User Already in room",
+    1039: "User banned from the room",
+    1040: "Error leaving room",
+    1041: "User is not active member of this room"
 };
 
 export const COOKIE_OPTIONS = {
