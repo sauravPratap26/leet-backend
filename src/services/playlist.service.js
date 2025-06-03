@@ -21,7 +21,7 @@ export const getAllListDetailsService = async (userId) => {
     return new ApiResponse(200, 8018, playlist);
 };
 export const getPlayListDetailsService = async (playlistId, userId) => {
-    const playlist = await db.playlist.findUnique({
+    const playlist = await db.playlist.findFirst({
         where: {
             id: playlistId,
             userId,
@@ -83,7 +83,7 @@ export const editPlaylistDetailsService = async (
     userId,
     id,
 ) => {
-    const existingPlaylist = await db.playlist.findUnique({
+    const existingPlaylist = await db.playlist.findFirst({
         where: {
             id,
             userId,
