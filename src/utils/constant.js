@@ -37,6 +37,9 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8036: "user room details fetched successfully",
     8037: "user rejoined room successfully",
     8038: "user joined room successfully",
+    8039: "user rooms fetched successfully",
+    8040: "room user details featched successfully",
+    8041: "room settings updated successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -80,7 +83,11 @@ export const RESPONSE_ERROR_MESSAGE = {
     1038: "User Already in room",
     1039: "User banned from the room",
     1040: "Error leaving room",
-    1041: "User is not active member of this room"
+    1041: "User is not active member of this room",
+    1042: "Error fetching Room Member details",
+    1043: "Failed to get Room Member detais",
+    1044: "Error updating open close status of room",
+    1045: "Failed updating open close status of room",
 };
 
 export const COOKIE_OPTIONS = {
