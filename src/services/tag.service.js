@@ -10,18 +10,17 @@ export const getTagsService = async () => {
                     name: true,
                     email: true,
                     submissions: {
-                        select: {
-                            id: true,
-                        },
+                        select: { id: true },
                     },
                     problemSolved: {
-                        select: {
-                            id: true,
-                        },
+                        select: { id: true },
                     },
                 },
             },
             problems: {
+                where: {
+                    roomId: null,
+                },
                 include: {
                     user: {
                         select: {
@@ -30,7 +29,11 @@ export const getTagsService = async () => {
                             email: true,
                         },
                     },
-                    submission: true,
+                    submission: {
+                        where: {
+                            roomId: null,
+                        },
+                    },
                     solvedBy: true,
                 },
             },
@@ -53,7 +56,7 @@ export const getTagsService = async () => {
             user: problem.user,
             submissionCount: problem.submission.length,
             solvedCount: problem.solvedBy.length,
-            difficulty: problem.difficulty
+            difficulty: problem.difficulty,
         })),
     }));
 
