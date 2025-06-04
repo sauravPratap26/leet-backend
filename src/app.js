@@ -45,7 +45,7 @@ app.use("/api/v1/submission", submissionRoutes);
 app.use("/api/v1/playlist", playlistRoutes);
 app.use("/api/v1/tags", tagsRoutes);
 app.use("/api/v1/profile", profileRoutes);
-app.use("/api/v1/club",roomRoutes)
+app.use("/api/v1/rooms",roomRoutes)
 app.use(errorHandler);
 
 export default app;
