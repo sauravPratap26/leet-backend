@@ -2,11 +2,11 @@ import { db } from "../libs/db.js";
 import ApiError from "../utils/api-error.js";
 import ApiResponse from "../utils/api-response.js";
 
-export const getAllListDetailsService = async (userId) => {
+export const getAllListDetailsService = async (userId, roomId = null) => {
+    const whereClause = roomId ? { roomId } : { userId, roomId: null };
+
     const playlist = await db.playlist.findMany({
-        where: {
-            userId,
-        },
+        where: whereClause,
         include: {
             problems: {
                 include: {
@@ -18,14 +18,20 @@ export const getAllListDetailsService = async (userId) => {
             updatedAt: "desc",
         },
     });
+
     return new ApiResponse(200, 8018, playlist);
 };
-export const getPlayListDetailsService = async (playlistId, userId) => {
+
+export const getPlayListDetailsService = async (
+    playlistId,
+    userId,
+    roomId = null,
+) => {
+    const whereClause = roomId
+        ? { roomId, id: playlistId }
+        : { userId, id: playlistId, roomId: null };
     const playlist = await db.playlist.findFirst({
-        where: {
-            id: playlistId,
-            userId,
-        },
+        where: whereClause,
         include: {
             problems: {
                 include: {
@@ -56,12 +62,18 @@ export const getPlayListDetailsService = async (playlistId, userId) => {
     });
     return new ApiResponse(200, 8019, formattedPlaylistProblems);
 };
-export const createPlaylistService = async (name, description, userId) => {
+export const createPlaylistService = async (
+    name,
+    description,
+    userId,
+    roomId = null,
+) => {
     const playlist = await db.playlist.create({
         data: {
             name,
             description,
             userId,
+            roomId,
         },
         include: {
             problems: {
