@@ -30,6 +30,7 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
             email: true,
             role: true,
             avatar: true,
+            canCreateRoom:true
         },
     });
 
