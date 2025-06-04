@@ -52,7 +52,7 @@ const checkReferenceSolutionsTestCases = async ({
     return { success: true, error: "" };
 };
 
-export const createProblemService = async (
+export const createProblemService = async ({
     title,
     description,
     difficulty,
@@ -66,7 +66,8 @@ export const createProblemService = async (
     userId,
     hints,
     editorial,
-) => {
+    roomId = null,
+}) => {
     const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
         referenceSolutions,
         testcases,
@@ -101,21 +102,27 @@ export const createProblemService = async (
             },
             hints,
             editorial,
+            roomId,
         },
         include: {
-            tags: true, // Optional: if you want to include tags in the response
+            tags: true,
         },
     });
     const formattedProblem = {
         ...newProblem,
         tags: newProblem.tags.map((tag) => ({ value: tag.value })),
     };
-
-    return new ApiResponse(200, 8007, formattedProblem);
+    return {
+        result: new ApiResponse(200, 8007, formattedProblem),
+        problemId: newProblem.id,
+    };
 };
 
 export const getAllProlemsService = async (userId) => {
     const problems = await db.problem.findMany({
+        where: {
+            roomId: null,
+        },
         include: {
             tags: true,
             problemsPlaylists: {
