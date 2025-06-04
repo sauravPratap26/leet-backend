@@ -161,6 +161,7 @@ export const loginService = async (email, password) => {
             image: updatedUser.image,
             avatar: updatedUser.avatar,
             tags: updatedUser.tags,
+            canCreateRoom: updatedUser.canCreateRoom
         }),
     };
 };

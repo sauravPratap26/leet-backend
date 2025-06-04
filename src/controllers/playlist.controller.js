@@ -16,13 +16,20 @@ export const getAllListDetails = asyncHandler(async (req, res) => {
 export const getPlayListDetails = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const playListId = req.params.id;
-    const playlist = await getPlayListDetailsService(playListId, userId);
+    const roomId = req.params.roomId
+    const playlist = await getPlayListDetailsService(playListId, userId, roomId);
     return res.status(playlist.statusCode).send(playlist);
 });
+
+export const getRoomPlayLists = asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    const details = await getAllListDetailsService(req.user.id, id);
+    return res.status(details.statusCode).send(details);
+});
 export const createPlaylist = asyncHandler(async (req, res) => {
-    const { name, description } = req.body;
+    const { name, description, roomId } = req.body;
     let userId = req.user.id;
-    const result = await createPlaylistService(name, description, userId);
+    const result = await createPlaylistService(name, description, userId, roomId);
     res.status(result.statusCode).send(result);
 });
 export const editPlaylistDetails = asyncHandler(async (req, res) => {
@@ -37,8 +44,8 @@ export const editPlaylistDetails = asyncHandler(async (req, res) => {
     res.status(result.statusCode).send(result);
 });
 export const addProblemToPlaylist = asyncHandler(async (req, res) => {
-    const { problemIds, playListId } = req.body;
-    const result = await addProblemToPlaylistService(playListId, problemIds);
+    const { problemIds, playListId, roomId } = req.body;
+    const result = await addProblemToPlaylistService(playListId, problemIds,roomId);
     return res.status(result.statusCode).send(result);
 });
 export const deletePlaylist = asyncHandler(async (req, res) => {

@@ -7,6 +7,7 @@ import {
     editPlaylistDetails,
     getAllListDetails,
     getPlayListDetails,
+    getRoomPlayLists,
     removeProblemFromPlaylist,
 } from "../controllers/playlist.controller.js";
 import validate from "../utils/validator.js";
@@ -20,6 +21,15 @@ import {
 const router = express.Router();
 
 router.get("/", authMiddleware, getAllListDetails);
+router.post("/room", authMiddleware, getRoomPlayLists);
+router.get(
+    "/:id/:roomId",
+    authMiddleware,
+    validate({
+        params: playlistValidation(),
+    }),
+    getPlayListDetails,
+);
 router.get(
     "/:id",
     authMiddleware,

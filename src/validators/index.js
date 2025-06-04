@@ -73,6 +73,8 @@ export const createProblemValidation = () => {
         referenceSolutions: z.any().refine((val) => val !== undefined, {
             message: "Reference solution is required",
         }),
+        roomId: z.string().uuid().optional(),
+        playlistId: z.string().uuid().optional(),
     });
 };
 
@@ -180,6 +182,7 @@ export const addProblemToPlaylistValidation = () => {
 export const playlistValidation = () => {
     return z.object({
         id: z.string().uuid({ message: "Invalid playlist ID" }),
+        roomId: z.string().uuid({ message: "Invalid room ID" }).optional(),
     });
 };
 
@@ -249,6 +252,21 @@ export const resetPasswordValidation = () => {
             .string()
             .min(6, "Password must be at least 6 characters")
             .max(15, "Password must be atmost 15 characters")
+            .trim(),
+    });
+};
+
+export const createRoomValiation = () => {
+    return z.object({
+        name: z
+            .string()
+            .min(3, "Room name must be at least 3 characters")
+            .max(15, "Room name must be atmost 15 characters")
+            .trim(),
+        description: z
+            .string()
+            .min(6, "Room description must be at least 6 characters")
+            .max(35, "Room description must be atmost 35 characters")
             .trim(),
     });
 };

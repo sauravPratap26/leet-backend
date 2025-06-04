@@ -25,6 +25,13 @@ router.post(
     validate({ schema: createProblemValidation() }),
     createProblem,
 );
+router.post(
+    "/room/create-problem",
+    authMiddleware,
+    checkAdmin,
+    validate({ schema: createProblemValidation() }),
+    createProblem,
+);
 router.get("/get-all-problem", authMiddleware, getAllProblem);
 router.get(
     "/get-problem/:id",
