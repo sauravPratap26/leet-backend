@@ -45,7 +45,7 @@ export const getCreatedRoomsService = async ({ userId }) => {
             return new ApiError(404, 1029);
         }
 
-        return new ApiResponse(200, rooms);
+        return new ApiResponse(203, 8035, rooms);
     } catch (error) {
         console.log(error);
         return new ApiError(400, 1035);
@@ -95,6 +95,7 @@ export const updateRoomService = async ({ id, userId, name, description }) => {
             },
         });
         return new ApiResponse(200, 8033, {
+            id: updatedRoom.id,
             name: updatedRoom.name,
             description: updatedRoom.description,
             code: updatedRoom.code,
@@ -141,7 +142,10 @@ export const generateRoomCodeService = async ({ id, userId }) => {
             return new ApiError(400, 1034);
         }
 
-        return new ApiResponse(201, 8034, { code: updatedRoom.code });
+        return new ApiResponse(201, 8034, {
+            id: updatedRoom.id,
+            code: updatedRoom.code,
+        });
     } catch (error) {
         console.log(error);
         return new ApiError(400, 1033);
@@ -167,7 +171,7 @@ export const getUserRoomsService = async ({ userId }) => {
             },
         });
 
-        return new ApiResponse(200, userRooms);
+        return new ApiResponse(200, 8039, userRooms);
     } catch (error) {
         console.log(error);
         return new ApiError(400, 1036);
@@ -181,6 +185,86 @@ export const joinRoomUsingCodeService = async ({ code, userId }) => {
             const room = await tx.room.findFirst({
                 where: {
                     code,
+                    isDeleted: false,
+                    isOpen: true,
+                },
+            });
+
+            if (!room) {
+                return new ApiError(404, 1029);
+            }
+
+            // Check if already an active member
+            const activeMember = await tx.roomMember.findFirst({
+                where: {
+                    roomId: room.id,
+                    userId,
+                    leftAt: null,
+                },
+            });
+            if (activeMember) {
+                return new ApiError(400, 1038);
+            }
+
+            // Check past membership of user
+            // if user was banned in past then reject
+            //allow rejoin
+            const pastMember = await tx.roomMember.findFirst({
+                where: {
+                    roomId: room.id,
+                    userId,
+                    NOT: {
+                        leftAt: null,
+                    },
+                },
+            });
+
+            if (pastMember) {
+                if (pastMember.banned) {
+                    return new ApiError(403, 1039);
+                }
+
+                const rejoinedMember = await tx.roomMember.update({
+                    where: { id: pastMember.id },
+                    data: {
+                        leftAt: null,
+                        joinedAt: new Date(),
+                    },
+                });
+
+                return new ApiResponse(200, 8037, rejoinedMember);
+            }
+
+            //New member joining
+            const newMember = await tx.roomMember.create({
+                data: {
+                    roomId: room.id,
+                    userId,
+                    role: "STUDENT",
+                },
+                include: {
+                    room: true,
+                },
+            });
+
+            return new ApiResponse(200, 8038, newMember);
+        });
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        return new ApiError(400, 1037);
+    }
+};
+
+export const joinCreatorRoomService = async ({ id, userId }) => {
+    try {
+        const result = await db.$transaction(async (tx) => {
+            // Find the room of user code
+            const room = await tx.room.findFirst({
+                where: {
+                    id,
+                    userId,
                     isDeleted: false,
                     isOpen: true,
                 },
@@ -250,7 +334,6 @@ export const joinRoomUsingCodeService = async ({ code, userId }) => {
         return new ApiError(400, 1037);
     }
 };
-
 export const leaveRoomService = async ({ id, userId }) => {
     try {
         const result = await db.$transaction(async (tx) => {
@@ -292,5 +375,54 @@ export const leaveRoomService = async ({ id, userId }) => {
     } catch (error) {
         console.error(error);
         return new ApiError(400, 1040);
+    }
+};
+
+export const getRoomMemberPermissionService = async ({ roomId, userId }) => {
+    try {
+        const details = await db.RoomMember.findFirst({
+            where: {
+                roomId,
+                userId,
+                leftAt: null,
+                banned: false,
+            },
+        });
+        if (!details) {
+            return new ApiError(400, 1043);
+        }
+        return new ApiResponse(200, 8040, details);
+    } catch (error) {
+        console.error(error);
+        return new ApiError(400, 1042);
+    }
+};
+
+export const openCloseRoomService = async ({ isOpen, id, userId }) => {
+    try {
+        const oldIsOpen = !isOpen;
+        const room = await db.room.findFirst({
+            where: {
+                id,
+                userId,
+                isOpen: oldIsOpen,
+                isDeleted: false,
+            },
+        });
+        if (!room) {
+            return new ApiError(400, 1029);
+        }
+
+        const updatedRoom = await db.room.update({
+            where: { id },
+            data: { isOpen },
+        });
+        if (!updatedRoom) {
+            return new ApiError(400, 1045);
+        }
+        return new ApiResponse(200, 8041, updatedRoom);
+    } catch (error) {
+        console.error(error);
+        return new ApiError(400, 1044);
     }
 };
