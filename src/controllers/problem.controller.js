@@ -9,7 +9,7 @@ import {
     problemsOfPlaylistService,
     updateProblemService,
 } from "../services/problem.service.js";
-import { db } from "../libs/db.js";
+import { addProblemToPlaylistService } from "../services/playlist.service.js";
 
 export const createProblem = asyncHandler(async (req, res) => {
     const {
@@ -25,8 +25,11 @@ export const createProblem = asyncHandler(async (req, res) => {
         hints,
         editorial,
         languageSolutionArray,
+        roomId,
+        playlistId,
     } = req.body;
-    const createProblemResponse = await createProblemService(
+
+    const createProblemResponse = await createProblemService({
         title,
         description,
         difficulty,
@@ -37,14 +40,27 @@ export const createProblem = asyncHandler(async (req, res) => {
         languageSolutionArray,
         codeSnippets,
         referenceSolutions,
-        req.user.id,
+        userId: req.user.id,
         hints,
         editorial,
-    );
+        roomId,
+        playlistId,
+    });
 
+    if (
+        roomId !== null &&
+        playlistId !== null &&
+        createProblemResponse.result.statusCode == 200
+    ) {
+        await addProblemToPlaylistService(
+            playlistId,
+            [createProblemResponse.problemId],
+            roomId,
+        );
+    }
     return res
-        .status(createProblemResponse.statusCode)
-        .send(createProblemResponse);
+        .status(createProblemResponse.result.statusCode)
+        .send(createProblemResponse.result);
 });
 export const getAllProblem = asyncHandler(async (req, res) => {
     const problems = await getAllProlemsService(req.user.id);
