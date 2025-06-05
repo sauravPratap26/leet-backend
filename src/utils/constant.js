@@ -40,6 +40,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8039: "user rooms fetched successfully",
     8040: "room user details featched successfully",
     8041: "room settings updated successfully",
+    8042: "room members fetched successfully"
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -88,6 +89,11 @@ export const RESPONSE_ERROR_MESSAGE = {
     1043: "Failed to get Room Member detais",
     1044: "Error updating open close status of room",
     1045: "Failed updating open close status of room",
+    1046: "Error getting Room Members",
+    1047: "No permission to fetch members",
+    1048: "Failed to get room members",
+    1049: "Error deleting member from room",
+    1050: "Student Not Found in room"
 };
 
 export const COOKIE_OPTIONS = {

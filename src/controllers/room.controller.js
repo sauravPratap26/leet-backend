@@ -3,12 +3,14 @@ import {
     deleteRoomService,
     generateRoomCodeService,
     getCreatedRoomsService,
+    getMembersService,
     getRoomMemberPermissionService,
     getUserRoomsService,
     joinCreatorRoomService,
     joinRoomUsingCodeService,
     leaveRoomService,
     openCloseRoomService,
+    removeStudentService,
     updateRoomService,
 } from "../services/room.service.js";
 import asyncHandler from "../utils/async-handler.js";
@@ -81,4 +83,22 @@ export const openCloseRoom = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const room = await openCloseRoomService({ isOpen, id, userId });
     return res.status(room.statusCode).send(room);
+});
+
+export const getMembers = asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    const userId = req.user.id;
+    const room = await getMembersService({ id, userId });
+    return res.status(room.statusCode).send(room);
+});
+
+export const deleteMember = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const { studentId, id } = req.body;
+    const result = await removeStudentService({
+        roomId: id,
+        studentId,
+        userId,
+    });
+    return res.status(result.statusCode).send(result);
 });

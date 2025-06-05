@@ -7,9 +7,11 @@ import validate from "../utils/validator.js";
 import { createRoomValiation } from "../validators/index.js";
 import {
     createRoom,
+    deleteMember,
     deleteRoom,
     generateRoomCode,
     getCreatedRooms,
+    getMembers,
     getRoomMemberPermission,
     getUserRooms,
     joinCreatorRoom,
@@ -52,4 +54,6 @@ router.post(
     checkRoomCreator,
     openCloseRoom,
 );
+router.post("/get-members", authMiddleware, getMembers);
+router.delete("/remove-member", authMiddleware, deleteMember);
 export default router;

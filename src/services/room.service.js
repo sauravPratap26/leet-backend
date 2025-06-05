@@ -426,3 +426,92 @@ export const openCloseRoomService = async ({ isOpen, id, userId }) => {
         return new ApiError(400, 1044);
     }
 };
+
+export const getMembersService = async ({ id, userId }) => {
+    try {
+        const isTeacher = await db.roomMember.findFirst({
+            where: {
+                roomId: id,
+                userId,
+                banned: false,
+                role: "TEACHER",
+            },
+            select: { id: true },
+        });
+        if (!isTeacher) {
+            return new ApiError(400, 1047);
+        }
+        const members = await db.roomMember.findMany({
+            where: {
+                roomId: id,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+            },
+        });
+        if (!members) {
+            return new ApiError(400, 1048);
+        }
+        return new ApiResponse(200, 8042, members);
+    } catch (error) {
+        console.error(error);
+        return new ApiError(400, 1046);
+    }
+};
+
+export const removeStudentService = async ({ userId, studentId, roomId }) => {
+    try {
+        const result = await db.$transaction(async (tx) => {
+            const isTeacher = await tx.roomMember.findFirst({
+                where: {
+                    roomId,
+                    userId,
+                    role: "TEACHER",
+                    banned: false,
+                },
+                select: { id: true },
+            });
+
+            if (!isTeacher) {
+                return new ApiError(403, 1047);
+            }
+
+            // Check if the student is an active member (not banned, not left)
+            const studentMembership = await tx.roomMember.findFirst({
+                where: {
+                    roomId,
+                    userId: studentId,
+                    banned: false,
+                    leftAt: null,
+                },
+                select: { id: true },
+            });
+
+            if (!studentMembership) {
+                return new ApiError(404, 1050);
+            }
+
+            await tx.roomMember.delete({
+                where: {
+                    roomId_userId: {
+                        roomId,
+                        userId: studentId,
+                    },
+                },
+            });
+
+            return new ApiResponse(200, 8050);
+        });
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        return new ApiError(500, 1052);
+    }
+};
