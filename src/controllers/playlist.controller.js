@@ -4,6 +4,7 @@ import {
     deletePlaylistService,
     editPlaylistDetailsService,
     getAllListDetailsService,
+    getBasicPlaylistInfoService,
     getPlayListDetailsService,
     removeProblemFromPlaylistService,
 } from "../services/playlist.service.js";
@@ -16,8 +17,12 @@ export const getAllListDetails = asyncHandler(async (req, res) => {
 export const getPlayListDetails = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const playListId = req.params.id;
-    const roomId = req.params.roomId
-    const playlist = await getPlayListDetailsService(playListId, userId, roomId);
+    const roomId = req.params.roomId;
+    const playlist = await getPlayListDetailsService(
+        playListId,
+        userId,
+        roomId,
+    );
     return res.status(playlist.statusCode).send(playlist);
 });
 
@@ -29,7 +34,12 @@ export const getRoomPlayLists = asyncHandler(async (req, res) => {
 export const createPlaylist = asyncHandler(async (req, res) => {
     const { name, description, roomId } = req.body;
     let userId = req.user.id;
-    const result = await createPlaylistService(name, description, userId, roomId);
+    const result = await createPlaylistService(
+        name,
+        description,
+        userId,
+        roomId,
+    );
     res.status(result.statusCode).send(result);
 });
 export const editPlaylistDetails = asyncHandler(async (req, res) => {
@@ -45,7 +55,11 @@ export const editPlaylistDetails = asyncHandler(async (req, res) => {
 });
 export const addProblemToPlaylist = asyncHandler(async (req, res) => {
     const { problemIds, playListId, roomId } = req.body;
-    const result = await addProblemToPlaylistService(playListId, problemIds,roomId);
+    const result = await addProblemToPlaylistService(
+        playListId,
+        problemIds,
+        roomId,
+    );
     return res.status(result.statusCode).send(result);
 });
 export const deletePlaylist = asyncHandler(async (req, res) => {
@@ -60,5 +74,12 @@ export const removeProblemFromPlaylist = asyncHandler(async (req, res) => {
         playListId,
         problemIds,
     );
+    return res.status(result.statusCode).send(result);
+});
+
+export const getBasicPlaylistInfo = asyncHandler(async (req, res) => {
+    const { id, roomId } = req.params;
+    const userId = req.user.id;
+    const result = await getBasicPlaylistInfoService({ userId, id, roomId });
     return res.status(result.statusCode).send(result);
 });

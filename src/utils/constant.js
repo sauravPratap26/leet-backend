@@ -40,7 +40,8 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8039: "user rooms fetched successfully",
     8040: "room user details featched successfully",
     8041: "room settings updated successfully",
-    8042: "room members fetched successfully"
+    8042: "room members fetched successfully",
+    8043: "playlist basic details fethced",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -93,7 +94,10 @@ export const RESPONSE_ERROR_MESSAGE = {
     1047: "No permission to fetch members",
     1048: "Failed to get room members",
     1049: "Error deleting member from room",
-    1050: "Student Not Found in room"
+    1050: "Student Not Found in room",
+    1051: "Error getting Playlist basic details",
+    1052: "Failed to get Playlist basic details",
+    1053: "User not authorized or found to search playlist basic information",
 };
 
 export const COOKIE_OPTIONS = {

@@ -1,3 +1,4 @@
+import { getBasicPlaylistInfo } from "../controllers/playlist.controller.js";
 import { db } from "../libs/db.js";
 import ApiError from "../utils/api-error.js";
 import ApiResponse from "../utils/api-response.js";
@@ -157,4 +158,36 @@ export const removeProblemFromPlaylistService = async (
         },
     });
     return new ApiResponse(200, 8022, deletedProblem);
+};
+
+export const getBasicPlaylistInfoService = async ({ id, roomId, userId }) => {
+    try {
+        const user = await db.roomMember.findUnique({
+            where: {
+                roomId_userId: {
+                    roomId,
+                    userId,
+                },
+            },
+        });
+        if (!user || user.role != "TEACHER") {
+            return new ApiError(400, 1053);
+        }
+        const playlist = await db.playlist.findFirst({
+            where: {
+                id,
+                roomId,
+            },
+            include: {
+                problems: true,
+            },
+        });
+        if (!playlist) {
+            return new ApiError(400, 1052, playlist);
+        }
+        return new ApiResponse(200, 8043, playlist);
+    } catch (error) {
+        console.log(error);
+        return new ApiError(400, 1051);
+    }
 };

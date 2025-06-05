@@ -6,6 +6,7 @@ import {
     deletePlaylist,
     editPlaylistDetails,
     getAllListDetails,
+    getBasicPlaylistInfo,
     getPlayListDetails,
     getRoomPlayLists,
     removeProblemFromPlaylist,
@@ -66,5 +67,11 @@ router.post(
     validate({ schema: editPlaylistDetailsValidation() }),
     authMiddleware,
     editPlaylistDetails,
+);
+
+router.get(
+    "/basic-room-playlist/:id/:roomId",
+    authMiddleware,
+    getBasicPlaylistInfo,
 );
 export default router;
