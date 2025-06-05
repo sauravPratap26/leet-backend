@@ -329,6 +329,7 @@ export const getAllProblemsSolvedByUserService = async (userId) => {
 export const problemsOfPlaylistService = async (userId) => {
     const problemsInUserPlaylists = await prisma.problem.findMany({
         where: {
+            roomId:null,
             problemsPlaylists: {
                 some: {
                     playlist: {
@@ -367,6 +368,7 @@ export const getCreatedProblems = async (userId) => {
     const problems = await prisma.problem.findMany({
         where: {
             userId,
+            roomId:null
         },
         include: {
             tags: true,
