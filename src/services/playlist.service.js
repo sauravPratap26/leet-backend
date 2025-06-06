@@ -170,7 +170,7 @@ export const getBasicPlaylistInfoService = async ({ id, roomId, userId }) => {
                 },
             },
         });
-        if (!user || user.role != "TEACHER") {
+        if (!user) {
             return new ApiError(400, 1053);
         }
         const playlist = await db.playlist.findFirst({
