@@ -183,21 +183,23 @@ export const getProblemByIdService = async (problemId) => {
     return new ApiResponse(200, 8009, formattedProblem);
 };
 
-export const updateProblemService = async (problemId, data) => {
-    const {
-        title,
-        description,
-        difficulty,
-        tags, // [{ value: 'xyz' }, { value: 'abc' }]
-        examples,
-        constraints,
-        testcases,
-        languageSolutionArray,
-        codeSnippets,
-        referenceSolutions,
-        userId,
-    } = data;
-
+export const updateProblemService = async ({
+    title,
+    description,
+    difficulty,
+    tags,
+    examples,
+    constraints,
+    testcases,
+    languageSolutionArray,
+    codeSnippets,
+    referenceSolutions,
+    userId,
+    hints,
+    editorial,
+    roomId = null,
+    id,
+}) => {
     const isReferenceSolutionCorrect = await checkReferenceSolutionsTestCases({
         referenceSolutions,
         testcases,
@@ -205,14 +207,17 @@ export const updateProblemService = async (problemId, data) => {
     });
 
     if (!isReferenceSolutionCorrect.success) {
-        return new ApiError(400, 1011, [], "", {
-            error: isReferenceSolutionCorrect.error,
+        return new ApiError(400, 1056, [], "", {
+            error: {
+                message: isReferenceSolutionCorrect.error,
+                details: isReferenceSolutionCorrect.details,
+            },
         });
     }
 
     const updatedProblem = await db.problem.update({
         where: {
-            id: problemId,
+            id,
             userId: userId,
         },
         data: {
@@ -232,29 +237,21 @@ export const updateProblemService = async (problemId, data) => {
                     create: { value: tag.value },
                 })),
             },
+            hints,
+            editorial,
+            roomId,
         },
         include: {
             tags: true,
-            solvedBy: {
-                where: {
-                    userId,
-                },
-                select: {
-                    id: true,
-                },
-            },
         },
     });
 
-    const formattedProblems = updatedProblem.map(
-        ({ solvedBy, tags, ...rest }) => ({
-            ...rest,
-            isSolved: solvedBy.length > 0,
-            tags: tags.map((tag) => tag.value),
-        }),
-    );
+    const formattedProblem = {
+        ...updatedProblem,
+        tags: updatedProblem.tags.map((tag) => ({ value: tag.value })),
+    };
 
-    return new ApiResponse(200, 8010, formattedProblems);
+    return new ApiResponse(200, 8010, formattedProblem);
 };
 
 export const deleteProblemService = async (problemId, userId) => {
@@ -329,7 +326,7 @@ export const getAllProblemsSolvedByUserService = async (userId) => {
 export const problemsOfPlaylistService = async (userId) => {
     const problemsInUserPlaylists = await prisma.problem.findMany({
         where: {
-            roomId:null,
+            roomId: null,
             problemsPlaylists: {
                 some: {
                     playlist: {
@@ -368,7 +365,7 @@ export const getCreatedProblems = async (userId) => {
     const problems = await prisma.problem.findMany({
         where: {
             userId,
-            roomId:null
+            roomId: null,
         },
         include: {
             tags: true,

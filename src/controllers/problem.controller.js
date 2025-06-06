@@ -79,11 +79,16 @@ export const updateProblemById = asyncHandler(async (req, res) => {
         examples,
         constraints,
         testcases,
-        languageSolutionArray,
         codeSnippets,
         referenceSolutions,
+        hints,
+        editorial,
+        languageSolutionArray,
+        roomId,
+        playlistId,
     } = req.body;
-    const problem = await updateProblemService(req.params.id, {
+    const { id } = req.params;
+    const problem = await updateProblemService({
         title,
         description,
         difficulty,
@@ -95,6 +100,11 @@ export const updateProblemById = asyncHandler(async (req, res) => {
         codeSnippets,
         referenceSolutions,
         userId: req.user.id,
+        hints,
+        editorial,
+        roomId,
+        playlistId,
+        id,
     });
     return res.status(problem.statusCode).send(problem);
 });

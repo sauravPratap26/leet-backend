@@ -98,6 +98,8 @@ export const RESPONSE_ERROR_MESSAGE = {
     1051: "Error getting Playlist basic details",
     1052: "Failed to get Playlist basic details",
     1053: "User not authorized or found to search playlist basic information",
+    1056: "Error in sample solution of edited problem",
+    1057: "User not authorized to update problem"
 };
 
 export const COOKIE_OPTIONS = {
