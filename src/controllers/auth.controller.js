@@ -10,7 +10,11 @@ import ApiResponse from "../utils/api-response.js";
 
 const register = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
-    const registerResult = await registerService(name, email, password);
+    const registerResult = await registerService(
+        name,
+        email.toLowerCase(),
+        password,
+    );
     if (registerResult.token != undefined)
         res.cookie("jwt", registerResult.token, COOKIE_OPTIONS);
     res.status(registerResult.response.statusCode).send(
@@ -19,7 +23,7 @@ const register = asyncHandler(async (req, res) => {
 });
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    const loginResult = await loginService(email, password);
+    const loginResult = await loginService(email.toLowerCase(), password);
     if (loginResult.token != undefined)
         res.cookie("jwt", loginResult.token, COOKIE_OPTIONS);
     res.status(loginResult.response.statusCode).send(loginResult.response);
@@ -34,7 +38,7 @@ const get = asyncHandler((req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
-    const result = await forgotPasswordService(email);
+    const result = await forgotPasswordService(email.toLowerCase());
     res.status(result.statusCode).send(result);
 });
 
