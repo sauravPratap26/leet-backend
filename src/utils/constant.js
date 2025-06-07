@@ -44,6 +44,7 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8043: "playlist basic details fethced",
     8044: "room members fetched for admin successfully",
     8045: "room member details updated successfully",
+
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -111,7 +112,9 @@ export const RESPONSE_ERROR_MESSAGE = {
     1064: "User not a teacher in given room",
     1065: "Playlist in that room not found",
     1066: "Error deleting playlist",
-    1067: "Error updating playlist"
+    1067: "Error updating playlist",
+    1068: "Error updating problem",
+    1069: "Problem does not belong to that room"
 };
 
 export const COOKIE_OPTIONS = {

@@ -215,43 +215,78 @@ export const updateProblemService = async ({
         });
     }
 
-    const updatedProblem = await db.problem.update({
-        where: {
-            id,
-            userId: userId,
-        },
-        data: {
-            title,
-            description,
-            difficulty,
-            examples,
-            constraints,
-            testcases,
-            languageSolutionArray,
-            codeSnippets,
-            referenceSolutions,
-            tags: {
-                set: [],
-                connectOrCreate: tags.map((tag) => ({
-                    where: { value: tag.value },
-                    create: { value: tag.value },
-                })),
-            },
-            hints,
-            editorial,
-            roomId,
-        },
-        include: {
-            tags: true,
-        },
-    });
+    try {
+        const result = await db.$transaction(async (tx) => {
+            let whereClause = {};
+            if (roomId) {
+                const isTeacher = await tx.roomMember.findFirst({
+                    where: {
+                        roomId,
+                        userId,
+                        banned: false,
+                        role: "TEACHER",
+                    },
+                    select: { id: true },
+                });
+                if (!isTeacher) {
+                    return new ApiError(400, 1064);
+                }
+                const checkProblemInRoom = await tx.problem.findFirst({
+                    where: {
+                        id,
+                        roomId,
+                    },
+                });
+                if (!checkProblemInRoom) {
+                    return new ApiError(400, 1069);
+                }
+                whereClause = { id };
+            } else {
+                console.log(
+                    "cannot edit questions which are not a part of room yet",
+                );
+                return new ApiError(404, 1069);
+                // whereClause = { id, userId };
+            }
+            const updatedProblem = await tx.problem.update({
+                where: whereClause,
+                data: {
+                    title,
+                    description,
+                    difficulty,
+                    examples,
+                    constraints,
+                    testcases,
+                    languageSolutionArray,
+                    codeSnippets,
+                    referenceSolutions,
+                    tags: {
+                        set: [],
+                        connectOrCreate: tags.map((tag) => ({
+                            where: { value: tag.value },
+                            create: { value: tag.value },
+                        })),
+                    },
+                    hints,
+                    editorial,
+                    roomId,
+                },
+                include: {
+                    tags: true,
+                },
+            });
 
-    const formattedProblem = {
-        ...updatedProblem,
-        tags: updatedProblem.tags.map((tag) => ({ value: tag.value })),
-    };
-
-    return new ApiResponse(200, 8010, formattedProblem);
+            const formattedProblem = {
+                ...updatedProblem,
+                tags: updatedProblem.tags.map((tag) => ({ value: tag.value })),
+            };
+            return new ApiResponse(200, 8010, formattedProblem);
+        });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return new ApiError(500, 1068);
+    }
 };
 
 export const deleteProblemService = async (problemId, userId) => {

@@ -119,6 +119,7 @@ export const updateProblemValidation = () => {
         referenceSolutions: z.any().refine((val) => val !== undefined, {
             message: "Reference solution is required",
         }),
+        roomId: z.string().uuid().optional(),
     });
 };
 
