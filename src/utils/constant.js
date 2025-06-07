@@ -108,6 +108,9 @@ export const RESPONSE_ERROR_MESSAGE = {
     1061: "Error updating User Permission",
     1062: "User not authorized to change permissions",
     1063: "Failed to update user permissions",
+    1064: "User not a teacher in given room",
+    1065: "Playlist in that room not found",
+    1066: "Error deleting playlist",
 };
 
 export const COOKIE_OPTIONS = {

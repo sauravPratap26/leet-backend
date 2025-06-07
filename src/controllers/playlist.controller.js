@@ -63,9 +63,10 @@ export const addProblemToPlaylist = asyncHandler(async (req, res) => {
     return res.status(result.statusCode).send(result);
 });
 export const deletePlaylist = asyncHandler(async (req, res) => {
-    const playListId = req.body.id;
+    const playlistId = req.body.id;
+    const roomId = req.body.roomId;
     const userId = req.user.id;
-    const result = await deletePlaylistService(playListId, userId);
+    const result = await deletePlaylistService({ playlistId, userId, roomId });
     return res.status(result.statusCode).send(result);
 });
 export const removeProblemFromPlaylist = asyncHandler(async (req, res) => {

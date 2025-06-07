@@ -136,14 +136,55 @@ export const addProblemToPlaylistService = async (playListId, problemId) => {
     });
     return new ApiResponse(201, 8020, problemInPlaylist);
 };
-export const deletePlaylistService = async (playlistId, userId) => {
-    const deletedPlaylist = await db.playlist.delete({
-        where: {
-            id: playlistId,
-            userId,
-        },
-    });
-    return new ApiResponse(200, 8021, deletedPlaylist);
+export const deletePlaylistService = async ({ playlistId, userId, roomId }) => {
+    try {
+        const result = await db.$transaction(async (tx) => {
+            if (roomId !== null && roomId !== undefined) {
+                //lets check if the userId is a teacher of that room or not
+                const isTeacher = await tx.roomMember.findFirst({
+                    where: {
+                        roomId,
+                        userId,
+                        banned: false,
+                        role: "TEACHER",
+                    },
+                    select: { id: true },
+                });
+                if (!isTeacher) {
+                    return new ApiError(400, 1064);
+                }
+                //now lets check if the playlist is a part of this room
+                const checkPlaylistInRoom = await tx.playlist.findFirst({
+                    where: {
+                        id: playlistId,
+                        roomId,
+                    },
+                });
+                if (!checkPlaylistInRoom) {
+                    return new ApiError(404, 1065);
+                }
+                //if playlist is a part of room, user is available to delte then simply deleted
+                const deletedPlaylist = await db.playlist.delete({
+                    where: {
+                        id: playlistId,
+                    },
+                });
+                return new ApiResponse(200, 8021, deletedPlaylist);
+            } else {
+                const deletedPlaylist = await db.playlist.delete({
+                    where: {
+                        id: playlistId,
+                        userId,
+                    },
+                });
+                return new ApiResponse(200, 8021, deletedPlaylist);
+            }
+        });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return new ApiError(400, 1066);
+    }
 };
 export const removeProblemFromPlaylistService = async (
     playListId,
