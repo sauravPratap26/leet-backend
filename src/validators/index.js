@@ -198,6 +198,7 @@ export const editPlaylistDetailsValidation = () => {
             .max(250, "Playlist description should have max 15 characters"),
         userId: z.string().uuid({ message: "invalid user id" }),
         id: z.string().uuid({ message: "invalid playlist id" }),
+        roomId: z.string().uuid({ message: "invalid room id" }).optional(),
     });
 };
 

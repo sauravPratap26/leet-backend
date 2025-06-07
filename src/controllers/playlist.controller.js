@@ -43,14 +43,15 @@ export const createPlaylist = asyncHandler(async (req, res) => {
     res.status(result.statusCode).send(result);
 });
 export const editPlaylistDetails = asyncHandler(async (req, res) => {
-    const { id, name, description } = req.body;
+    const { id, name, description, roomId } = req.body;
     let userId = req.user.id;
-    const result = await editPlaylistDetailsService(
+    const result = await editPlaylistDetailsService({
         name,
         description,
         userId,
         id,
-    );
+        roomId,
+    });
     res.status(result.statusCode).send(result);
 });
 export const addProblemToPlaylist = asyncHandler(async (req, res) => {

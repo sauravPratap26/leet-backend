@@ -111,6 +111,7 @@ export const RESPONSE_ERROR_MESSAGE = {
     1064: "User not a teacher in given room",
     1065: "Playlist in that room not found",
     1066: "Error deleting playlist",
+    1067: "Error updating playlist"
 };
 
 export const COOKIE_OPTIONS = {

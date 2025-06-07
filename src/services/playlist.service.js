@@ -90,42 +90,76 @@ export const createPlaylistService = async (
     }
     return new ApiResponse(200, 8017, playlist);
 };
-export const editPlaylistDetailsService = async (
+export const editPlaylistDetailsService = async ({
     name,
     description,
     userId,
     id,
-) => {
-    const existingPlaylist = await db.playlist.findFirst({
-        where: {
-            id,
-            userId,
-        },
-    });
-    if (!existingPlaylist) {
-        return new ApiError(400, 1019);
-    }
-    const updatedPlaylist = await db.playlist.update({
-        where: {
-            id,
-            userId,
-        },
-        data: {
-            name,
-            description,
-        },
-        include: {
-            problems: {
-                include: {
-                    problem: true,
+    roomId,
+}) => {
+    try {
+        const result = await db.$transaction(async (tx) => {
+            if (roomId !== null && roomId !== undefined) {
+                //lets check if the userId is a teacher of that room or not
+                const isTeacher = await tx.roomMember.findFirst({
+                    where: {
+                        roomId,
+                        userId,
+                        banned: false,
+                        role: "TEACHER",
+                    },
+                    select: { id: true },
+                });
+                if (!isTeacher) {
+                    return new ApiError(400, 1064);
+                }
+                //now lets check if the playlist is a part of this room
+                const checkPlaylistInRoom = await tx.playlist.findFirst({
+                    where: {
+                        id,
+                        roomId,
+                    },
+                });
+                if (!checkPlaylistInRoom) {
+                    return new ApiError(404, 1065);
+                }
+            } else {
+                const existingPlaylist = await tx.playlist.findFirst({
+                    where: {
+                        id,
+                        userId,
+                    },
+                });
+                if (!existingPlaylist) {
+                    return new ApiError(400, 1019);
+                }
+            }
+            const updatedPlaylist = await tx.playlist.update({
+                where: {
+                    id,
                 },
-            },
-        },
-    });
-    if (!updatedPlaylist) {
-        return new ApiError(400, 1020);
+                data: {
+                    name,
+                    description,
+                },
+                include: {
+                    problems: {
+                        include: {
+                            problem: true,
+                        },
+                    },
+                },
+            });
+            if (!updatedPlaylist) {
+                return new ApiError(400, 1020);
+            }
+            return new ApiResponse(200, 8023, updatedPlaylist);
+        });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return new ApiError(500, 1067);
     }
-    return new ApiResponse(200, 8023, updatedPlaylist);
 };
 export const addProblemToPlaylistService = async (playListId, problemId) => {
     const problemInPlaylist = await db.problemInPlaylist.createMany({
@@ -171,7 +205,7 @@ export const deletePlaylistService = async ({ playlistId, userId, roomId }) => {
                 });
                 return new ApiResponse(200, 8021, deletedPlaylist);
             } else {
-                const deletedPlaylist = await db.playlist.delete({
+                const deletedPlaylist = await tx.playlist.delete({
                     where: {
                         id: playlistId,
                         userId,
@@ -183,7 +217,7 @@ export const deletePlaylistService = async ({ playlistId, userId, roomId }) => {
         return result;
     } catch (error) {
         console.log(error);
-        return new ApiError(400, 1066);
+        return new ApiError(500, 1066);
     }
 };
 export const removeProblemFromPlaylistService = async (
