@@ -23,6 +23,7 @@ export const createRoomService = async ({ name, description, userId }) => {
             description: room.description,
             code: room.code,
             createdById: room.createdById,
+            isOpen: room.isOpen
         };
 
         return new ApiResponse(201, 8031, filteredRoom);
