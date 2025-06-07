@@ -1,3 +1,4 @@
+import { date } from "zod";
 import { RoomRole } from "../generated/prisma/index.js";
 import { db } from "../libs/db.js";
 import ApiError from "../utils/api-error.js";
@@ -23,7 +24,7 @@ export const createRoomService = async ({ name, description, userId }) => {
             description: room.description,
             code: room.code,
             createdById: room.createdById,
-            isOpen: room.isOpen
+            isOpen: room.isOpen,
         };
 
         return new ApiResponse(201, 8031, filteredRoom);
@@ -466,6 +467,42 @@ export const getMembersService = async ({ id, userId }) => {
     }
 };
 
+export const getMembersForAdminService = async ({ id, userId }) => {
+    try {
+        const isCreator = await db.room.findFirst({
+            where: {
+                id,
+                userId,
+                isDeleted: false,
+            },
+        });
+        if (!isCreator) {
+            return new ApiError(404, 1058);
+        }
+        const members = await db.roomMember.findMany({
+            where: {
+                roomId: id,
+                leftAt: null,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+            },
+        });
+        if (!members) {
+            return new ApiError(400, 1059);
+        }
+        return new ApiResponse(200, 8044, members);
+    } catch (error) {
+        console.error(error);
+        return new ApiError(400, 1060);
+    }
+};
 export const removeStudentService = async ({ userId, studentId, roomId }) => {
     try {
         const result = await db.$transaction(async (tx) => {
@@ -514,5 +551,80 @@ export const removeStudentService = async ({ userId, studentId, roomId }) => {
     } catch (error) {
         console.error(error);
         return new ApiError(500, 1052);
+    }
+};
+
+export const changePermissionsService = async ({
+    userId,
+    newPermission,
+    isBanned,
+    ownerId,
+    roomId,
+    deleteMember,
+}) => {
+    try {
+        const result = await db.$transaction(async (tx) => {
+            let updatedMember;
+            const isCreator = await tx.room.findFirst({
+                where: {
+                    id: roomId,
+                    userId: ownerId,
+                    isDeleted: false,
+                },
+            });
+
+            if (!isCreator) {
+                return new ApiError(404, 1062);
+            }
+
+            if (deleteMember) {
+                updatedMember = await tx.roomMember.delete({
+                    where: {
+                        roomId_userId: {
+                            roomId,
+                            userId,
+                        },
+                    },
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                            },
+                        },
+                    },
+                });
+            } else {
+                const updateData = {};
+                if (newPermission) updateData.role = newPermission;
+                if (typeof isBanned === "boolean") updateData.banned = isBanned;
+                updatedMember = await tx.roomMember.update({
+                    where: {
+                        roomId_userId: {
+                            roomId,
+                            userId,
+                        },
+                    },
+                    data: updateData,
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                            },
+                        },
+                    },
+                });
+            }
+
+            return new ApiResponse(200, 8045, updatedMember);
+        });
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        return new ApiError(500, 1061);
     }
 };

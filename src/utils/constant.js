@@ -42,6 +42,8 @@ export const RESPONSE_SUCCESS_MESSAGE = {
     8041: "room settings updated successfully",
     8042: "room members fetched successfully",
     8043: "playlist basic details fethced",
+    8044: "room members fetched for admin successfully",
+    8045: "room member details updated successfully",
 };
 
 export const RESPONSE_ERROR_MESSAGE = {
@@ -99,7 +101,13 @@ export const RESPONSE_ERROR_MESSAGE = {
     1052: "Failed to get Playlist basic details",
     1053: "User not authorized or found to search playlist basic information",
     1056: "Error in sample solution of edited problem",
-    1057: "User not authorized to update problem"
+    1057: "User not authorized to update problem",
+    1058: "User not authorized to for admin get members",
+    1059: "Failed to get room members for admin",
+    1060: "Error getting Room Members for Admin",
+    1061: "Error updating User Permission",
+    1062: "User not authorized to change permissions",
+    1063: "Failed to update user permissions",
 };
 
 export const COOKIE_OPTIONS = {

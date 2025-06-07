@@ -1,8 +1,10 @@
 import {
+    changePermissionsService,
     createRoomService,
     deleteRoomService,
     generateRoomCodeService,
     getCreatedRoomsService,
+    getMembersForAdminService,
     getMembersService,
     getRoomMemberPermissionService,
     getUserRoomsService,
@@ -101,4 +103,25 @@ export const deleteMember = asyncHandler(async (req, res) => {
         userId,
     });
     return res.status(result.statusCode).send(result);
+});
+
+export const getMembersForAdmin = asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    const userId = req.user.id;
+    const room = await getMembersForAdminService({ id, userId });
+    return res.status(room.statusCode).send(room);
+});
+
+export const changePermissions = asyncHandler(async (req, res) => {
+    const { id, userId, newPermission, isBanned, deleteMember } = req.body;
+    const ownerId = req.user.id;
+    const updatedMember = await changePermissionsService({
+        userId,
+        ownerId,
+        roomId: id,
+        newPermission,
+        isBanned,
+        deleteMember,
+    });
+    return res.status(updatedMember.statusCode).send(updatedMember);
 });

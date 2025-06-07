@@ -6,12 +6,14 @@ import {
 import validate from "../utils/validator.js";
 import { createRoomValiation } from "../validators/index.js";
 import {
+    changePermissions,
     createRoom,
     deleteMember,
     deleteRoom,
     generateRoomCode,
     getCreatedRooms,
     getMembers,
+    getMembersForAdmin,
     getRoomMemberPermission,
     getUserRooms,
     joinCreatorRoom,
@@ -56,4 +58,16 @@ router.post(
 );
 router.post("/get-members", authMiddleware, getMembers);
 router.delete("/remove-member", authMiddleware, deleteMember);
+router.post(
+    "/get-members-admin",
+    authMiddleware,
+    checkRoomCreator,
+    getMembersForAdmin,
+);
+router.post(
+    "/update-member",
+    authMiddleware,
+    checkRoomCreator,
+    changePermissions,
+);
 export default router;
