@@ -72,7 +72,7 @@ export const leaveRoom = asyncHandler(async (req, res) => {
 });
 
 export const getRoomMemberPermission = asyncHandler(async (req, res) => {
-    const { id } = req.query;
+    const { id } = req.params;
     const userId = req.user.id;
     const room = await getRoomMemberPermissionService({ roomId: id, userId });
     return res.status(room.statusCode).send(room);
