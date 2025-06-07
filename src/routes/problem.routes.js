@@ -28,7 +28,6 @@ router.post(
 router.post(
     "/room/create-problem",
     authMiddleware,
-    checkAdmin,
     validate({ schema: createProblemValidation() }),
     createProblem,
 );
@@ -42,7 +41,7 @@ router.get(
 router.post(
     "/update-problem/:id",
     authMiddleware,
-    checkAdmin,
+    // checkAdmin, //currently available only to teachers so no need to check admin
     validate({
         body: updateProblemValidation(),
         params: problemParamsValidation(),
