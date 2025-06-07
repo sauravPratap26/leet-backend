@@ -10,6 +10,7 @@ import {
     updateProblemService,
 } from "../services/problem.service.js";
 import { addProblemToPlaylistService } from "../services/playlist.service.js";
+import ApiError from "../utils/api-error.js";
 
 export const createProblem = asyncHandler(async (req, res) => {
     const {
@@ -46,10 +47,16 @@ export const createProblem = asyncHandler(async (req, res) => {
         roomId,
         playlistId,
     });
-
+    if (createProblemResponse instanceof ApiError) {
+        return res
+            .status(createProblemResponse.statusCode)
+            .send(createProblemResponse.toJSON());
+    }
     if (
         roomId !== null &&
         playlistId !== null &&
+        roomId !== undefined &&
+        roomId !==undefined &&
         createProblemResponse.result.statusCode == 200
     ) {
         await addProblemToPlaylistService(
